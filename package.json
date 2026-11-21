@@ -1,0 +1,20 @@
+{
+  "name": "siembra",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Siembra: tokenización de activos del agro cruceño sobre Stellar (testnet). Ubihackathon 2026.",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "postinstall": "node scripts/install-all.mjs",
+    "dev": "concurrently -n api,web -c green,cyan \"npm --prefix api run dev\" \"npm --prefix web run dev\"",
+    "dev:api": "npm --prefix api run dev",
+    "dev:web": "npm --prefix web run dev",
+    "setup:stellar": "npm --prefix api run setup:stellar",
+    "seed": "npm --prefix api run seed"
+  },
+  "devDependencies": {
+    "concurrently": "10.0.7"
+  }
+}

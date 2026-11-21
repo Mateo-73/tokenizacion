@@ -1,0 +1,23 @@
+# Dueños de código según la tabla "Propiedad de carpetas" de CLAUDE.md.
+# GitHub pide revisión automática a los dueños de lo que toca cada PR.
+# Si dos reglas coinciden, gana la última.
+
+# Documentación, README y demo: Rafa y Diego
+/docs/                          @BRafa34 @DiegoSiSte
+/README.md                      @BRafa34 @DiegoSiSte
+
+# Backend: lógica de negocio y rutas: Mateo
+/api/src/routes/                @Mateo-73
+/api/src/services/              @Mateo-73
+/api/src/data/                  @Mateo-73
+
+# Todo lo que toca la red Stellar y los scripts: Sebas
+/api/src/stellar/               @sebaselprogramador
+/scripts/                       @sebaselprogramador
+
+# Frontend: Luis
+/web/                           @4NG3L35
+
+# Documentación técnica con dueño propio (el contrato lo implementa Mateo y lo consume Luis)
+/docs/tecnico/04-api-contrato.md        @Mateo-73 @4NG3L35
+/docs/tecnico/03-stellar-modelo-de-activos.md  @sebaselprogramador
