@@ -26,13 +26,13 @@ export async function getPortfolio({ publicKey }) {
 }
 
 /**
- * Tenedores de un asset (docs/03 §4.6), sin contar la cuenta DISTRIBUTOR (sus fracciones son las
- * que aún no se venden). Recorre todas las páginas de Horizon.
+ * Tenedores de un asset con sus saldos completos (para saber, por ejemplo, si pueden recibir USDC).
+ * Sin contar la cuenta DISTRIBUTOR. Recorre todas las páginas de Horizon.
  *
- * @param {{ code: string }} args
- * @returns {Promise<{ publicKey: string, balance: number }[]>}
+ * @param {string} code
+ * @returns {Promise<{ publicKey: string, balance: number, balances: object[] }[]>}
  */
-export async function getHolders({ code }) {
+export async function holderRecords(code) {
   const asset = fractionAsset(code);
   const distributor = loadKeys().DISTRIBUTOR.publicKey();
 
@@ -42,10 +42,22 @@ export async function getHolders({ code }) {
     for (const record of page.records) {
       const balance = Number(findBalance(record.balances, asset)?.balance ?? 0);
       if (record.account_id !== distributor && balance > 0) {
-        holders.push({ publicKey: record.account_id, balance });
+        holders.push({ publicKey: record.account_id, balance, balances: record.balances });
       }
     }
     page = await page.next();
   }
   return holders;
+}
+
+/**
+ * Tenedores de un asset (docs/03 §4.6), sin contar la cuenta DISTRIBUTOR (sus fracciones son las
+ * que aún no se venden).
+ *
+ * @param {{ code: string }} args
+ * @returns {Promise<{ publicKey: string, balance: number }[]>}
+ */
+export async function getHolders({ code }) {
+  const records = await holderRecords(code);
+  return records.map(({ publicKey, balance }) => ({ publicKey, balance }));
 }

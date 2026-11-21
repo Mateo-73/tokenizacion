@@ -45,6 +45,7 @@ No ejecutes `npm run setup:stellar` por tu cuenta si vas a trabajar con las cuen
 | `npm run setup:stellar` | Crea y fondea las cuentas en testnet (una sola vez) |
 | `npm run seed` | Emite `SILO01` y `SOYA01` en testnet (idempotente) |
 | `npm run portfolio -- <clave pública>` | Solo lectura: muestra el portafolio de una wallet y los tenedores de cada activo |
+| `npm run demo:distribute` | Prueba el reparto de retornos por script: ⚠ **compra fracciones de `SOYA01` y paga USDC de prueba** a todos sus tenedores en cada ejecución |
 | `npm run demo:buy` | Prueba la compra de punta a punta por script: ⚠ **compra 10 fracciones reales de `SILO01`** en cada ejecución |
 
 Para trabajar sin Stellar usa `MOCK_MODE=true` (ver `docs/02-stack-tecnologico.md`).

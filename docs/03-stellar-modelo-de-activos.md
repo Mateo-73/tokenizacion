@@ -189,7 +189,7 @@ explorerTx(hash)                                 // → URL
 3. [x] `issueAsset` para `SILO01` y `SOYA01`; el distribuidor muestra el total.
 4. [x] `createDemoInvestor` + `authorizeInvestor` + `buyFractions` funcionan **por script** (`npm run demo:buy`), con `txHash` visible en el explorador.
 5. [x] `getPortfolio` refleja la compra (`npm run portfolio -- <clave pública>`).
-6. [ ] `distributeReturns` paga USDC proporcional.
+6. [x] `distributeReturns` paga USDC proporcional (`npm run demo:distribute`).
 7. [ ] `recordTrace` + `verifyTrace`.
 8. [ ] Exportar todo desde `stellar/index.js` con las firmas de arriba.
 9. [ ] (Opcional) reventa en DEX.
