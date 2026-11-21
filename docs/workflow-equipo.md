@@ -43,10 +43,10 @@
 | Cuándo | Quién | Tareas |
 |---|---|---|
 | Hoy (20) | Todos | Alcance, nombre, contrato de API, repo y `CLAUDE.md` |
-| Hoy (20) | Sebas | Cuentas, asset, flags, USDC de prueba; compra funcionando por script |
+| Hoy (20) | Mateo (antes Sebas) | Cuentas, asset, flags, USDC de prueba; compra funcionando por script |
 | Hoy (20) | Mateo / Luis | API con datos mock / login con Pollar y esqueleto de pantallas |
 | Hoy (20) | Rafa / Diego | Marca y pantallas en Figma listas esta noche / textos del formulario, guion del pitch, estructura del README |
-| Mañana (21) | Sebas | Autorización de wallets; reventa en DEX si alcanza |
+| Mañana (21) | Mateo (antes Sebas) | Autorización de wallets; reventa en DEX si alcanza |
 | Mañana (21) | Mateo | Reparto de retornos y trazabilidad con hash |
 | Mañana (21) | Luis | Conectar pantallas a la API real (compra hasta portafolio) |
 | Mañana (21) | Rafa / Diego | Ajustes de UI con Luis / QA del flujo, video borrador y deck |

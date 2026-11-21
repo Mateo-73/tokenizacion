@@ -3,37 +3,29 @@
 Fusiona "plan de tareas" y "prompts de Claude Code". Cubre **todas** las tareas de los cinco integrantes.
 Fechas: **hoy 20 nov (noche), 21 nov, 22 nov (cierre de envío)**. Confirmar con los organizadores la hora límite exacta del 22.
 
-## Cambios posteriores y estado (21 nov)
-> Este bloque se añadió al incorporar el plan al repositorio. El resto del documento es el original del equipo.
-
-- **Lenguaje: JavaScript** (ESM). Los prompts y nombres de archivo de este plan (`.js`) se mantienen tal cual.
-- **Sebas salió del equipo.** Sus tareas **S0–S9 pasan a Mateo** (rama `feat/stellar`). Los prompts de la sección 4 los ejecuta Mateo.
-- **S0 ya no hace falta:** `api/src/services/stellar-port.js` define las firmas de docs/03 §5 y `api/src/services/mock-stellar.js` las implementa. Falta `api/src/stellar/index.js` con la red real (S7).
-- **Los documentos que cita este plan** son los del `siembra-docs.zip` (00, 01, 02, 03, 04, 06). Los dos que aún no existen y se producen en el plan son `docs/07-ux-ui-design-system.md` (Rafa, R3) y `docs/api-mock-curl.md` (M1).
-
+## Estado de las tareas de Mateo (21 nov)
 | ID | Estado |
 |---|---|
-| S1 | **Hecho:** 4 cuentas en testnet, flags `AUTH_REQUIRED\|AUTH_REVOCABLE` y 100.000 USDC de prueba en `TREASURY` |
-| S2 | **Hecho:** `SILO01` (1.000) y `SOYA01` (2.000) emitidos; el `DISTRIBUTOR` los muestra; `npm run seed` es idempotente |
-| S3 | **Hecho (hito):** `npm run demo:buy` crea un inversionista con 1.000 USDC, lo autoriza y compra 10 fracciones de `SILO01` en una transacción atómica (2 pagos, 2 firmas); verifica saldos en Horizon y los errores `NOT_AUTHORIZED`, `INSUFFICIENT_FRACTIONS`, `INSUFFICIENT_USDC` |
-| S4 | **Hecho:** `getPortfolio` y `getHolders` leen de Horizon; `npm run portfolio -- <clave>` muestra el portafolio y comprueba que vendidas = total − distribuidor |
-| S5 | **Hecho:** `distributeReturns` paga desde `TREASURY` proporcional a las fracciones sobre el total, redondeo hacia abajo a 7 decimales, sin pagar al `DISTRIBUTOR`, lotes de 50; `npm run demo:distribute` lo verifica con 2 inversionistas contra Horizon |
-| S6 | **Hecho:** `recordTrace` guarda el SHA-256 del hito en `manageData` del `ISSUER` (`t.<assetId>.<order>`); `verifyTrace` da `true` si coincide y `false` si el texto cambió; `npm run demo:trace` lo comprueba contra Horizon |
-| S7 | Pendiente: cerrar `api/src/stellar/index.js` y conectar la API real |
-| M1 | **Hecho** en modo mock; falta `docs/api-mock-curl.md` |
-| M3–M8 | **Hechos en modo mock** (12 pruebas en `api/test/`); falta probarlos con Stellar real |
-| M2 | Pendiente: hoy el almacén es en memoria, falta `db.json` y `seed.json` |
-| M9 | Parcial: `npm test` corre el flujo completo, pero solo en modo mock |
-| L*, R*, D* | Sin cambios en este documento |
+| S1 | **Hecho:** 4 cuentas en testnet, flags `AUTH_REQUIRED\|AUTH_REVOCABLE`, 100.000 USDC de prueba en `TREASURY` |
+| S2 | **Hecho:** `SILO01` (1.000) y `SOYA01` (2.000) emitidos; `npm run seed` es idempotente |
+| S3 | **Hecho (hito):** compra atómica por script, `npm run demo:buy` (2 pagos, 2 firmas, errores esperados verificados) |
+| S4 | **Hecho:** `getPortfolio` y `getHolders` leen de Horizon; `npm run portfolio -- <clave>` |
+| S5 | **Hecho:** `distributeReturns` proporcional, redondeo hacia abajo, lotes de 50; `npm run demo:distribute` |
+| S6 | **Hecho:** `recordTrace` y `verifyTrace` (hash SHA-256 en `manageData` del `ISSUER`); `npm run demo:trace` |
+| S7 | Pendiente: cerrar `api/src/stellar/index.js` y conectar la API real (`loadStellar` en `api/src/bootstrap.js`) |
+| M1 | **Hecho** en modo mock (la API es `api/src/`; el mock mantiene estado en memoria) |
+| M3–M8 | **Hechos en modo mock**, con códigos de error alineados con docs/09; falta probarlos con Stellar real (S7) |
+| M2 | Pendiente: hoy el almacén es en memoria; falta `db.json` y `seed.json` (docs/05) |
+| M9 | Pendiente: `npm test` corre el flujo en proceso y solo en mock; falta `npm run test:flow` contra la API local |
 
 ## 0. Cómo usar este documento
-1. Cada quien busca su sección (Sebas, Mateo, Luis, Rafa, Diego).
+1. Cada quien busca su sección (Mateo, Luis, Rafa, Diego).
 2. Las tareas tienen ID (`S1`, `M3`, `L2`, `R1`, `D4`...). Se hacen **en orden**, salvo que diga "paralelo".
 3. Los devs pegan el prompt de la tarea en Claude Code, que empieza leyendo `CLAUDE.md` y el doc indicado.
 4. Una tarea está **terminada** cuando cumple su criterio de "Hecho" y está en `main`. Avisar en el grupo con el ID: "S3 listo".
 
 ## 1. Reglas de coordinación
-- **Ramas:** `feat/stellar` (Sebas), `feat/api` (Mateo), `feat/ui` (Luis), `docs/*` (Diego). Antes de abrir PR: `git pull --rebase origin main`.
+- **Ramas:** `feat/stellar` y `feat/api` (Mateo), `feat/ui` (Luis), `docs/*` (Diego). Antes de abrir PR: `git pull --rebase origin main`.
 - **Merge:** PR pequeño, revisado por otro dev en menos de 30 minutos. Orden de merge ante conflicto: stellar → api → ui.
 - **Carpetas:** cada quien edita solo la suya (ver `CLAUDE.md`). Para tocar la de otro, avisar en el grupo.
 - **Diseño sin git:** Rafa y Diego pueden dejar sus entregables en la carpeta `design/` del repo o enviarlos al grupo; Luis los sube si no usan git.
@@ -45,15 +37,24 @@ Fechas: **hoy 20 nov (noche), 21 nov, 22 nov (cierre de envío)**. Confirmar con
 | ID | Qué | Quién entrega | Quién lo necesita | Cuándo |
 |---|---|---|---|---|
 | INT-1 | API en `MOCK_MODE` respondiendo como docs/04 | Mateo (M1) | Luis | Primera hora de hoy |
-| INT-2 | `stellar/index.js` con las firmas de docs/03 §5 (puede ser stub) | Sebas (S0) | Mateo | Primera hora de hoy |
+| INT-2 | Funciones Stellar reales: compra y portafolio (S3–S4) | Mateo | Luis y Diego (probar flujo B) | Noche de hoy |
 | INT-3 | Marca + pantallas + tokens de diseño | Rafa (R1–R3) | Luis | Esta noche / mañana temprano |
-| INT-4 | Funciones Stellar reales (compra, portafolio) | Sebas (S3–S4) | Mateo | Noche de hoy |
+| INT-4 | Reparto de retornos y trazabilidad reales (S5–S6) | Mateo | Luis (L6) y Diego (QA) | 21 mañana-tarde |
 | INT-5 | API real completa | Mateo (M4–M7) | Luis (L8) | Mañana 21, tarde |
 | INT-6 | Flujo A→E de punta a punta | Todos | Diego (QA, video) | Mañana 21, tarde-noche |
 
 ## 3. Línea de tiempo resumida
-| Momento | Sebas | Mateo | Luis | Rafa | Diego |
-|---|---|---|---|---|---|
+| Momento | Mateo | Luis | Rafa | Diego |
+|---|---|---|---|---|
+| **Noche 20** | M1, S1, S2, S3 | L1, L2 | R1, R2 | D0, D1 |
+| **21 mañana** | M2, M3, M4, S4 | L3, L4 | R2, R3, R4 | D2, D4 |
+| **21 tarde** | S5, S6, M5, M6, M7, M8, S7 | L5, L6, L8 | R5 | D4, D5 |
+| **21 noche** | M9, bugs, congelar | L7, L9, congelar | R5 | D5 (video borrador), D3 |
+| **22** | Soporte y bugs | Soporte y bugs | Soporte visual | D5 final, D6 envío |
+
+**Orden de ejecución de Mateo (concentra Stellar + API):** M1 → S1 → S2 → S3 (hito de hoy) → M2 → M3 → M4 → S4 → S5 → M5 → M6 → S6 → M7 → M8 → S7 → M9. La tarea S0 (stub) se salta: al ser la misma persona, no hace falta.
+
+---|---|---|---|---|---|
 | **Noche 20** | S0, S1, S2, S3 | M1, M2, M3 | L1, L2 | R1, R2 | D0, D1 |
 | **21 mañana** | S4, S5 | M4, M5 | L3, L4 | R2, R3, R4 | D2, D4 |
 | **21 tarde** | S6, S7 | M6, M7, M8 | L5, L6, L8 | R5 | D4, D5 |
@@ -62,9 +63,9 @@ Fechas: **hoy 20 nov (noche), 21 nov, 22 nov (cierre de envío)**. Confirmar con
 
 ---
 
-## 4. Sebas — núcleo Stellar (carpeta `api/src/stellar/`, `scripts/`)
+## 4. Mateo — núcleo Stellar (tareas S, antes de Sebas; carpeta `api/src/stellar/`, `scripts/`)
 
-**S0 — Stub de `stellar/index.js` (primera hora).** Exporta todas las funciones de docs/03 §5 con la firma correcta, devolviendo valores falsos coherentes. *Hecho:* Mateo puede importarlas y compilar. (INT-2)
+**S0 — Stub de `stellar/index.js` (primera hora).** Exporta todas las funciones de docs/03 §5 con la firma correcta, devolviendo valores falsos coherentes. *Hecho:* las rutas del API pueden importarlas y compilar.
 ```
 Lee CLAUDE.md y docs/03-stellar-modelo-de-activos.md §5.
 Crea api/src/stellar/index.js exportando TODAS las funciones de §5 con la firma exacta, como stubs que devuelvan datos falsos coherentes (txHash falso, balances inventados). No implementes lógica real todavía. Deja un comentario TODO por función.
@@ -104,7 +105,7 @@ Lee docs/03 §4.6. Implementa getHolders y distributeReturns. Regla: cada tenedo
 
 ---
 
-## 5. Mateo — API y servicios (carpetas `api/src/routes/`, `services/`, `data/`)
+## 5. Mateo — API y servicios (tareas M; carpetas `api/src/routes/`, `services/`, `data/`)
 
 **M1 — Esqueleto de API en MOCK_MODE (primera hora, INT-1).** Express + CORS (`http://localhost:5173`) + manejador de errores `{error:{code,message}}` + `/health` + todos los endpoints de docs/04 devolviendo las respuestas de ejemplo. *Hecho:* `curl` a cada endpoint con `MOCK_MODE=true` devuelve la forma exacta del contrato; Luis puede trabajar.
 ```
@@ -218,7 +219,7 @@ Crea el contenido de un deck de 6 diapositivas para el pitch de Siembra en la Ub
 
 ---
 
-## 9. Reglas de oro para trabajar con Claude Code (para Sebas, Mateo, Luis)
+## 9. Reglas de oro para trabajar con Claude Code (para Mateo y Luis)
 - Una tarea por sesión, un commit por tarea.
 - Pegar siempre "Lee CLAUDE.md y el doc indicado" al inicio.
 - Ejecutar y verificar uno mismo (testnet y explorador). No confiar en "debería funcionar".
@@ -232,6 +233,8 @@ Crea el contenido de un deck de 6 diapositivas para el pitch de Siembra en la Ub
 3. Plan A con Pollar (queda el Plan B, que ya funciona).
 4. Vaquita.
 5. Vertical urbano (ya está fuera del MVP).
+
+**Punto de decisión de carga (21 nov, 14:00):** Mateo concentra la capa Stellar y el API. Si S3–S5 no están terminadas a esa hora, se recorta primero el hash on-chain de trazabilidad y Pollar; Luis toma las rutas simples del API (M2, M3, M5, M8) y Diego puede tomar la capa visual (L7, L9).
 
 **Núcleo que nunca se recorta:** entrada, emisión, autorización, compra en USDC, portafolio y reparto de retornos, todo en testnet.
 

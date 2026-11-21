@@ -11,7 +11,12 @@ Contexto: Ubihackathon 2026 (Stellar para startups). **Cierre de envío: 22 de n
 - `docs/03-stellar-modelo-de-activos.md` — cuentas, assets, flags, código base de Stellar
 - `docs/04-api-contrato.md` — endpoints (el contrato es ley)
 - `docs/06-flujos-de-usuario.md` — flujos paso a paso y guion de demo
-- `docs/11-plan-de-tareas-y-prompts.md` — tareas por persona (IDs `S1`, `M3`, `L2`...) y prompts
+- `docs/05-modelo-de-datos.md` — estructura de `db.json` y datos de ejemplo
+- `docs/07-ux-ui-design-system.md` — marca, colores, pantallas y textos
+- `docs/08-frontend-guia.md` y `docs/09-backend-guia.md` — guías de implementación
+- `docs/10-seguridad-y-claves.md` — manejo de secretos (léelo antes de cada push)
+- `docs/11-plan-de-tareas-y-prompts.md` — tareas (S/M/L/R/D), prompts, puntos de integración y orden de recorte
+- `docs/13-testing-y-qa.md`, `docs/14-demo-y-pitch.md`, `docs/15-negocio-y-roadmap.md` — QA, demo/pitch y negocio
 
 ## Reglas de oro
 1. **Solo testnet.** Nunca claves, fondos ni cuentas reales.
@@ -25,12 +30,11 @@ Contexto: Ubihackathon 2026 (Stellar para startups). **Cierre de envío: 22 de n
 ## Propiedad de carpetas
 | Carpeta | Dueño |
 |---|---|
-| `api/src/stellar/`, `scripts/` | Mateo (antes Sebas, que salió del equipo) |
-| `api/src/routes/`, `api/src/services/`, `api/src/data/` | Mateo |
+| `api/` (incluye `api/src/stellar/`) y `scripts/` | Mateo |
 | `web/` | Luis |
 | diseño, textos, README, demo | Rafa y Diego |
 
-Si necesitas tocar la carpeta de otro, pídelo en el grupo o abre un PR hacia su rama.
+Si necesitas tocar la carpeta de otro, pídelo en el grupo o abre un PR hacia su rama. (Sebas salió del equipo: Mateo asumió la capa Stellar y el API.)
 
 ## Comandos
 ```bash

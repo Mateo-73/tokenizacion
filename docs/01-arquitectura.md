@@ -28,8 +28,8 @@
 ## Cuentas Stellar (detalle en docs/03)
 `ISSUER` (emite fracciones, flags de autorización), `DISTRIBUTOR` (guarda fracciones sin vender y recibe pagos), `TREASURY` (paga retornos), `USDC_ISSUER` (USDC de prueba).
 
-## Frontera entre `services/` y `stellar/`
-Las rutas y servicios **no** usan el SDK de Stellar directamente: llaman a las funciones exportadas por `api/src/stellar/index.js` (firmas en docs/03 y en `api/src/services/stellar-port.js`). Así la lógica de negocio se prueba con el mock y la red real se cambia sin tocarla.
+## Separación de capas
+`routes/` y `services/` **no** usan el SDK de Stellar directamente: llaman a las funciones exportadas por `api/src/stellar/index.js` (firmas en docs/03 §5). Así `MOCK_MODE` es trivial y, si otra persona se suma, puede tomar una capa sin pisarse.
 
 ## Modo mock
 `MOCK_MODE=true` hace que la API responda con datos fijos sin tocar Stellar. Mateo lo entrega en la primera hora para que Luis no espere. En mock, los `txHash` son falsos y el `explorerUrl` es `null`.

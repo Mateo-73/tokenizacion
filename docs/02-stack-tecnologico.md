@@ -27,6 +27,7 @@ npm i -D nodemon
 npm pkg set scripts.dev="nodemon src/server.js"
 npm pkg set scripts.setup:stellar="node ../scripts/setup-stellar.js"
 npm pkg set scripts.seed="node ../scripts/seed.js"
+# Los demás scripts (demo:buy, test:flow) están en docs/09 §2
 cd ..
 # Frontend
 npm create vite@latest web -- --template react

@@ -1,6 +1,6 @@
 # 03 — Modelo de activos en Stellar (testnet)
 
-Dueño: **Mateo** (antes Sebas, que salió del equipo). Todo lo que toca la red vive en `api/src/stellar/`. Las rutas y servicios solo usan las funciones exportadas (sección 5).
+Dueño: **Mateo**. Todo lo que toca la red vive en `api/src/stellar/`. Las rutas del API solo usan las funciones exportadas (sección 5).
 
 ## 1. Cuentas
 | Cuenta | Rol | Notas |
@@ -160,7 +160,7 @@ await submit(issuerKp, [Operation.manageData({ name: `t.${assetId}.${order}`, va
 ### 4.9 Opcional: reventa en el DEX
 `Operation.manageSellOffer({ selling: fractionAsset(code), buying: usdcAsset(), amount, price })`. Solo si el núcleo ya funciona; el comprador necesita trustline autorizada al asset.
 
-## 5. Interfaz exportada a `services/` (`api/src/stellar/index.js`)
+## 5. Interfaz exportada (`api/src/stellar/index.js`), consumida por las rutas del API
 > **El contrato exacto de esta interfaz está documentado en `api/src/services/stellar-port.js`** (`StellarPort`, con JSDoc). Si hay diferencias con el bloque de abajo, manda ese archivo. Diferencias acordadas al implementarlo:
 > - `distributeReturns` devuelve `payouts: [{ publicKey, fractions, usdc, txHash }]` (el `txHash` del lote en que viajó cada pago).
 > - `explorerTx(hash)` es síncrona y devuelve `string | null` (`null` en modo mock).
@@ -184,7 +184,7 @@ verifyTrace({ assetId, order, hash })            // → boolean
 explorerTx(hash)                                 // → URL
 ```
 
-## 6. Lista de verificación de `api/src/stellar/` (en este orden)
+## 6. Lista de verificación de la capa Stellar (en este orden)
 1. [x] `setup-stellar.js` crea y fondea las 4 cuentas; claves en `.stellar-keys.json`.
 2. [x] Flags activos en `ISSUER` (verificar en el explorador).
 3. [x] `issueAsset` para `SILO01` y `SOYA01`; el distribuidor muestra el total.

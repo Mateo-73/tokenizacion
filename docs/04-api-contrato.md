@@ -6,19 +6,20 @@ Dueños: **Mateo** (implementa) y **Luis** (consume). Cambios: editar este doc p
 ## Convenciones
 - Éxito: `200` con el objeto descrito. Creación: `201`.
 - Error: `{ "error": { "code": "STRING", "message": "texto legible en español" } }`.
-- Códigos de error: `VALIDATION`, `NOT_FOUND`, `NOT_AUTHORIZED` (wallet sin autorizar), `INSUFFICIENT_USDC`, `INSUFFICIENT_FRACTIONS`, `FORBIDDEN` (falta `x-admin-key`), `STELLAR_ERROR`, `INTERNAL` (error inesperado del servidor).
+- Códigos de error: `VALIDATION`, `NOT_FOUND`, `NOT_AUTHORIZED` (wallet sin autorizar), `INSUFFICIENT_USDC`, `INSUFFICIENT_FRACTIONS`, `FORBIDDEN` (falta `x-admin-key`), `STELLAR_ERROR`.
 - Estado HTTP por código de error (el frontend debe decidir por `error.code`, no por el estado):
 
 | Código | HTTP |
 |---|---|
 | `VALIDATION` | 400 |
+| `INSUFFICIENT_USDC` | 400 |
+| `INSUFFICIENT_FRACTIONS` | 400 |
 | `FORBIDDEN` | 403 |
 | `NOT_AUTHORIZED` | 403 |
 | `NOT_FOUND` | 404 |
-| `INSUFFICIENT_FRACTIONS` | 409 |
-| `INSUFFICIENT_USDC` | 422 |
 | `STELLAR_ERROR` | 502 |
-| `INTERNAL` | 500 |
+
+Cualquier error inesperado del servidor también se responde como `STELLAR_ERROR` (502), sin detalles internos en el mensaje.
 
 - Endpoints de administrador requieren el header `x-admin-key: <ADMIN_KEY>`.
 - En `MOCK_MODE=true`, mismas formas de respuesta, con `txHash` falso y `explorerUrl: null`.
@@ -129,6 +130,5 @@ curl -X POST localhost:3001/api/distribute -H 'content-type: application/json' -
 ```
 
 ## Responsabilidades
-- **Mateo:** implementar rutas y servicios, `db.json`, `MOCK_MODE`, validaciones. Llama a `api/src/stellar/index.js` (docs/03 §5).
+- **Mateo:** implementar rutas y servicios, `db.json`, `MOCK_MODE`, validaciones y la capa `api/src/stellar/` (docs/03). Las rutas llaman solo a `api/src/stellar/index.js` (docs/03 §5).
 - **Luis:** consumir solo estos endpoints; crear `web/src/mocks/` con las respuestas de arriba para trabajar sin backend.
-- **Capa `stellar/`** (antes Sebas, que salió del equipo; ahora Mateo): garantizar que sus funciones devuelvan lo que este contrato necesita.
