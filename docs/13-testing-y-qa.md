@@ -11,7 +11,7 @@ npm run dev                                  # terminal 1
 cd ../web && npm i && cp .env.example .env   # VITE_USE_MOCKS=false
 npm run dev                                  # terminal 2
 ```
-Prueba automática de la API: `cd api && npm run test:flow` → debe terminar con `FLUJO OK`.
+Prueba automática de la API (con la API encendida): `npm run test:flow` desde la raíz (o `cd api && npm run test:flow`) → debe terminar con `FLUJO OK`. Si falla, imprime el motivo que devolvió la API. En modo real no agrega hito de trazabilidad salvo con `-- --con-hito`.
 
 ## 2. Flujo principal A → E (marcar cada paso)
 **A. Entrar y verificar**

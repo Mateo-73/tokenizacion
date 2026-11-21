@@ -27,6 +27,7 @@ Los scripts viven en `scripts/` y solo importan módulos de `api/src/` (no paque
 | `npm run setup:stellar` | Crea y fondea las 4 cuentas, flags de autorización, USDC de prueba | Idempotente; hacerlo una sola vez |
 | `npm run seed` | Emite `SILO01` y `SOYA01`, registra el hash de los hitos de la semilla y crea `api/data/db.json` | Idempotente. No lo ejecutes con la API encendida: reiníciala después |
 | `npm run portfolio -- <G...>` | Muestra el portafolio de una wallet y los tenedores | Solo lectura |
+| `npm run test:flow` | Flujo A→E completo a través de la API encendida (mock o real) | En modo real: compra 5 fracciones de `SILO01` y reparte 1 USDC; hito solo con `-- --con-hito` |
 | `npm run demo:trace` | Registra y verifica un hito en un activo de pruebas y lo borra | Limpia lo que crea |
 | `npm run demo:buy` | Flujo completo de compra y errores esperados | ⚠ Compra 10 fracciones de `SILO01` en cada ejecución |
 | `npm run demo:distribute` | Reparto de retornos con dos inversionistas | ⚠ Compra fracciones de `SOYA01` y paga USDC de prueba a todos sus tenedores |

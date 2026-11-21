@@ -41,7 +41,7 @@ npm install
 cp .env.example .env          # VITE_USE_MOCKS=false para usar la API real
 npm run dev                   # http://localhost:5173
 ```
-Prueba rápida del flujo de la API: `cd api && npm run test:flow` (debe terminar con `FLUJO OK`).
+Prueba rápida del flujo de la API (con la API encendida): `npm run test:flow` desde la raíz, o `cd api && npm run test:flow` (debe terminar con `FLUJO OK`). Funciona con `MOCK_MODE=true` y con `false`; en modo real compra 5 fracciones de `SILO01` y reparte 1 USDC de prueba en cada ejecución, y solo agrega un hito de trazabilidad con `npm run test:flow -- --con-hito`.
 
 **Sin red o con Stellar caído:** `MOCK_MODE=true` en `api/.env` y `VITE_USE_MOCKS=true` en `web/.env` permiten recorrer la interfaz con datos fijos.
 
@@ -60,7 +60,8 @@ No ejecutes `npm run setup:stellar` por tu cuenta si vas a trabajar con las cuen
 ### Scripts de prueba contra testnet (desde la raíz)
 | Comando | Qué hace |
 |---|---|
-| `npm --prefix api test` | Pruebas de la API (flujo completo en modo mock) |
+| `npm --prefix api test` | Pruebas de la API (35, en proceso y sin red) |
+| `npm run test:flow` | Flujo A→E contra la API encendida; termina con `FLUJO OK` o falla indicando el motivo |
 | `npm run portfolio -- <clave pública>` | Solo lectura: portafolio de una wallet y tenedores de cada activo |
 | `npm run demo:trace` | Registra y verifica el hash de un hito en un activo de pruebas y borra su entrada |
 | `npm run demo:buy` | ⚠ **Compra 10 fracciones reales de `SILO01`** en cada ejecución |

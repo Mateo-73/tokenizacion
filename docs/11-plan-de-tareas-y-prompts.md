@@ -16,7 +16,7 @@ Fechas: **hoy 20 nov (noche), 21 nov, 22 nov (cierre de envío)**. Confirmar con
 | M1 | **Hecho** en modo mock (la API es `api/src/`; el mock mantiene estado en memoria) |
 | M3–M8 | **Hechos**, con códigos de error alineados con docs/09; probados en modo mock y contra Stellar real (con persistencia en `db.json`) |
 | M2 | **Hecho:** `api/data/seed.json` versionada y `api/data/db.json` (ignorado, escritura atómica, permiso 600) en modo real; en mock todo queda en memoria; sobrevive a reiniciar la API (probado contra testnet); `npm run seed` registra los hitos |
-| M9 | Pendiente: `npm test` corre el flujo en proceso y solo en mock; falta `npm run test:flow` contra la API local |
+| M9 | **Hecho:** `npm run test:flow` recorre A→E contra la API encendida (mock y real) y falla con el motivo; en modo real solo agrega un hito con `--con-hito`. Probado contra testnet (38 s) |
 
 ## 0. Cómo usar este documento
 1. Cada quien busca su sección (Mateo, Luis, Rafa, Diego).

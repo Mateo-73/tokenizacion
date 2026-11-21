@@ -16,7 +16,8 @@
     "demo:buy": "npm --prefix api run demo:buy",
     "portfolio": "npm --prefix api run portfolio --",
     "demo:distribute": "npm --prefix api run demo:distribute",
-    "demo:trace": "npm --prefix api run demo:trace"
+    "demo:trace": "npm --prefix api run demo:trace",
+    "test:flow": "npm --prefix api run test:flow --"
   },
   "devDependencies": {
     "concurrently": "10.0.7"

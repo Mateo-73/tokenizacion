@@ -175,7 +175,7 @@ export async function withLiveData(asset) {
 - **`setup-stellar.js`** (docs/03 §4.1): idempotente. Si `.stellar-keys.json` existe, no regenera claves. `stellar/accounts.js` lee ese archivo y completa `process.env.*_PUBLIC` si faltan (así no hay que copiarlas a mano al `.env`).
 - **`seed.js`:** (1) para cada activo de `seed.json` sin emitir, `issueAsset`; (2) para cada hito sin `hash`, `recordTrace` y guardar `hash` y `txHash` en `db.json`. Idempotente.
 - **`demo-buy.js`:** crea inversionista demo, autoriza, compra 10 fracciones de `SILO01` y muestra el enlace al explorador.
-- **`test-flow.js` (M9):** recorre el flujo completo contra la API local y falla si algo se rompe:
+- **`test-flow.js` (M9):** recorre el flujo completo contra la API local y falla si algo se rompe. *Nota: la versión implementada en `scripts/test-flow.js` carga `api/.env` con Node, usa un período `YYYY-MM` válido y, en modo real, no agrega el hito de prueba salvo con `--con-hito`, porque quedaría grabado para siempre en Stellar.* El esquema original:
 ```js
 const API = process.env.API_URL ?? 'http://localhost:3001/api';
 async function call(path, method = 'GET', body, admin = false) {
@@ -208,4 +208,4 @@ console.log('FLUJO OK');
 - [ ] M1 API en mock · [ ] S1 cuentas · [ ] S2 activos emitidos · [ ] S3 compra por script
 - [ ] M2 db · [ ] M3 lectura · [ ] M4 investors/authorize/buy · [ ] S4 portafolio
 - [ ] S5 retornos · [ ] M5 portfolio · [ ] M6 distribute · [ ] S6 trazabilidad
-- [ ] M7 trace · [ ] M8 admin · [ ] S7 sin stubs · [ ] M9 `test:flow` en verde
+- [ ] M7 trace · [ ] M8 admin · [ ] S7 sin stubs · [x] M9 `test:flow` en verde

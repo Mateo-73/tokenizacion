@@ -11,7 +11,8 @@
     "demo:buy": "node ../scripts/demo-buy.js",
     "portfolio": "node ../scripts/show-portfolio.js",
     "demo:distribute": "node ../scripts/demo-distribute.js",
-    "demo:trace": "node ../scripts/demo-trace.js"
+    "demo:trace": "node ../scripts/demo-trace.js",
+    "test:flow": "node ../scripts/test-flow.js"
   },
   "type": "module",
   "private": true,
