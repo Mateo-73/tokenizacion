@@ -126,7 +126,7 @@ curl -X POST localhost:3001/api/investors/demo -H 'content-type: application/jso
 curl -X POST localhost:3001/api/authorize -H 'content-type: application/json' -d '{"investorId":"inv_001","assetId":"SILO01"}'
 curl -X POST localhost:3001/api/buy -H 'content-type: application/json' -d '{"investorId":"inv_001","assetId":"SILO01","fractions":10}'
 curl localhost:3001/api/portfolio/inv_001
-curl -X POST localhost:3001/api/distribute -H 'content-type: application/json' -H 'x-admin-key: $ADMIN_KEY' -d '{"assetId":"SILO01","totalUsdc":"2000","period":"2026-12"}'
+curl -X POST localhost:3001/api/distribute -H 'content-type: application/json' -H "x-admin-key: $ADMIN_KEY" -d '{"assetId":"SILO01","totalUsdc":"2000","period":"2026-12"}'
 ```
 
 ## Responsabilidades

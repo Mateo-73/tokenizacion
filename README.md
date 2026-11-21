@@ -88,6 +88,7 @@ No ejecutes `npm run setup:stellar` por tu cuenta si vas a trabajar con las cuen
 | [`docs/11`](docs/11-plan-de-tareas-y-prompts.md) | Plan de tareas y prompts (incluye lo que sería un doc 12 de prompts) |
 | [`docs/13`](docs/13-testing-y-qa.md) · [`14`](docs/14-demo-y-pitch.md) · [`15`](docs/15-negocio-y-roadmap.md) | QA, demo/pitch y negocio |
 | [`contexto-proyecto`](docs/contexto-proyecto.md) · [`workflow-equipo`](docs/workflow-equipo.md) | Contexto de la hackathon y workflow del equipo |
+| [`api-mock-curl`](docs/api-mock-curl.md) | Probar cada endpoint de la API con `curl` (respuestas reales) |
 
 ## Limitaciones conocidas
 - Solo testnet. El USDC es un activo de prueba emitido por nosotros, distinto del USDC real.
