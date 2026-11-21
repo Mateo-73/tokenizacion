@@ -6,7 +6,7 @@ Dueños: **Mateo** (implementa) y **Luis** (consume). Cambios: editar este doc p
 ## Convenciones
 - Éxito: `200` con el objeto descrito. Creación: `201`.
 - Error: `{ "error": { "code": "STRING", "message": "texto legible en español" } }`.
-- Códigos de error: `VALIDATION`, `NOT_FOUND`, `NOT_AUTHORIZED` (wallet sin autorizar), `INSUFFICIENT_USDC`, `INSUFFICIENT_FRACTIONS`, `FORBIDDEN` (falta `x-admin-key`), `STELLAR_ERROR`.
+- Códigos de error: `VALIDATION`, `NOT_FOUND`, `NOT_AUTHORIZED` (wallet sin autorizar), `INSUFFICIENT_USDC`, `INSUFFICIENT_FRACTIONS`, `FORBIDDEN` (falta `x-admin-key`), `STELLAR_ERROR`, `INTERNAL` (error inesperado del servidor).
 - Estado HTTP por código de error (el frontend debe decidir por `error.code`, no por el estado):
 
 | Código | HTTP |
@@ -18,6 +18,7 @@ Dueños: **Mateo** (implementa) y **Luis** (consume). Cambios: editar este doc p
 | `INSUFFICIENT_FRACTIONS` | 409 |
 | `INSUFFICIENT_USDC` | 422 |
 | `STELLAR_ERROR` | 502 |
+| `INTERNAL` | 500 |
 
 - Endpoints de administrador requieren el header `x-admin-key: <ADMIN_KEY>`.
 - En `MOCK_MODE=true`, mismas formas de respuesta, con `txHash` falso y `explorerUrl: null`.

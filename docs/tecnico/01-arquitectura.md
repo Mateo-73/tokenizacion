@@ -72,6 +72,8 @@ siembra/
 ├─ scripts/                   ← utilidades sueltas de Stellar (Sebas)
 ├─ api/                       ← backend: Node.js 20+ + Express 5 + TypeScript
 │  ├─ package.json            ("type": "module")
+│  ├─ tsconfig.json           ← TypeScript estricto (tsconfig.build.json para compilar)
+│  ├─ test/                   ← pruebas del flujo completo en modo mock (`npm test`)
 │  ├─ .env / .env.example
 │  ├─ .stellar-keys.json      ← generado, en .gitignore
 │  ├─ data/db.json            ← runtime, en .gitignore (puede contener claves demo)

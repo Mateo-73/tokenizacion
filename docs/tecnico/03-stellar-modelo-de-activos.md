@@ -163,6 +163,12 @@ await submit(issuerKp, [Operation.manageData({ name: `t.${assetId}.${order}`, va
 `Operation.manageSellOffer({ selling: fractionAsset(code), buying: usdcAsset(), amount, price })`. Solo si el núcleo ya funciona; el comprador necesita trustline autorizada al asset.
 
 ## 5. Interfaz exportada para Mateo (`api/src/stellar/index.ts`)
+> **El tipo exacto de esta interfaz está en `api/src/services/stellar-port.ts`** (`StellarPort`). Si hay diferencias con el bloque de abajo, manda ese archivo. Diferencias acordadas al implementarlo:
+> - `distributeReturns` devuelve `payouts: [{ publicKey, fractions, usdc, txHash }]` (el `txHash` del lote en que viajó cada pago).
+> - `explorerTx(hash)` es síncrona y devuelve `string | null` (`null` en modo mock).
+> - `getHolders` no incluye la cuenta `DISTRIBUTOR`.
+> - Para conectar `stellar/` hay que devolverlo en `loadStellar` (`api/src/bootstrap.ts`) cuando `MOCK_MODE=false`. `mock-stellar.ts` es una implementación completa de referencia.
+
 Todas son `async`. Los montos son strings; los errores se lanzan como `Error` con `.code` (`NOT_AUTHORIZED`, `INSUFFICIENT_USDC`, `INSUFFICIENT_FRACTIONS`, `STELLAR_ERROR`).
 ```js
 setupAccounts()                                  // idempotente; usado por el script de setup

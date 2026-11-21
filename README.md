@@ -31,6 +31,8 @@ cp web/.env.example web/.env
 | `npm install` | Instala dependencias de la raíz, `api/` y `web/` |
 | `npm run dev` | Levanta la API (`http://localhost:3001`) y la web (`http://localhost:5173`) a la vez |
 | `npm run dev:api` / `npm run dev:web` | Levanta solo una de las dos |
+| `npm --prefix api test` | Ejecuta las pruebas de la API (flujo completo en modo mock) |
+| `npm --prefix api run typecheck` | Verifica los tipos de TypeScript de la API |
 | `npm run setup:stellar` | Crea y fondea las cuentas en testnet (una sola vez) |
 | `npm run seed` | Emite `SILO01` y `SOYA01` y carga los datos de ejemplo |
 
