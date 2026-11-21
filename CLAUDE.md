@@ -47,6 +47,7 @@ cd web && npm run dev             # http://localhost:5173
 - Pide a Claude que escriba el código, pero **tú ejecutas y verificas** en testnet (explorador: https://stellar.expert/explorer/testnet).
 - No inventes endpoints ni campos: usa los de `docs/tecnico/04`.
 - Idioma de la interfaz y los textos: español. Código y nombres de variables: inglés.
+- Lenguaje: **TypeScript en modo estricto** en `api/` y `web/`. Sin `any` salvo justificación en un comentario. Antes de abrir un PR: `npm run typecheck` en tu carpeta.
 
 ## Definición de terminado (por tarea)
 Funciona de punta a punta en testnet, está en `main`, no rompe el flujo de demo y no expone secretos.
