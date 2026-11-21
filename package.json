@@ -12,7 +12,8 @@
     "dev:api": "npm --prefix api run dev",
     "dev:web": "npm --prefix web run dev",
     "setup:stellar": "npm --prefix api run setup:stellar",
-    "seed": "npm --prefix api run seed"
+    "seed": "npm --prefix api run seed",
+    "demo:buy": "npm --prefix api run demo:buy"
   },
   "devDependencies": {
     "concurrently": "10.0.7"

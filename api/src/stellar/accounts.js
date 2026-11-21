@@ -1,4 +1,6 @@
-import { Operation } from '@stellar/stellar-sdk';
+import { Keypair, Operation } from '@stellar/stellar-sdk';
+import { AppError } from '../errors.js';
+import { parseAmount } from '../money.js';
 import {
   AUTH_REQUIRED,
   AUTH_REVOCABLE,
@@ -79,4 +81,30 @@ export async function setupAccounts(log = () => {}) {
 
   const publics = Object.fromEntries(ACCOUNT_NAMES.map((name) => [name, keys[name].publicKey()]));
   return { created, publics };
+}
+
+/**
+ * Crea un inversionista demo custodial (Plan B, docs/03 §4.7): cuenta nueva fondeada con XLM de
+ * prueba, trustline a USDC y USDC de prueba pagado por USDC_ISSUER. Solo testnet.
+ *
+ * @param {{ initialUsdc: string }} args
+ * @returns {Promise<{ publicKey: string, secret: string }>}
+ */
+export async function createDemoInvestor({ initialUsdc }) {
+  const amount = parseAmount(initialUsdc);
+  if (amount === null || amount <= 0n) {
+    throw new AppError('VALIDATION', 'initialUsdc debe ser un monto positivo como texto.');
+  }
+
+  const investor = Keypair.random();
+  await fundWithFriendbot(investor.publicKey());
+  await submit(investor, [Operation.changeTrust({ asset: usdcAsset() })]);
+  await submit(loadKeys().USDC_ISSUER, [
+    Operation.payment({
+      destination: investor.publicKey(),
+      asset: usdcAsset(),
+      amount: initialUsdc,
+    }),
+  ]);
+  return { publicKey: investor.publicKey(), secret: investor.secret() };
 }

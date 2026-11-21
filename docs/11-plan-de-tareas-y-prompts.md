@@ -15,7 +15,8 @@ Fechas: **hoy 20 nov (noche), 21 nov, 22 nov (cierre de envío)**. Confirmar con
 |---|---|
 | S1 | **Hecho:** 4 cuentas en testnet, flags `AUTH_REQUIRED\|AUTH_REVOCABLE` y 100.000 USDC de prueba en `TREASURY` |
 | S2 | **Hecho:** `SILO01` (1.000) y `SOYA01` (2.000) emitidos; el `DISTRIBUTOR` los muestra; `npm run seed` es idempotente |
-| S3–S7 | Pendientes (S3, la compra por script, es el hito) |
+| S3 | **Hecho (hito):** `npm run demo:buy` crea un inversionista con 1.000 USDC, lo autoriza y compra 10 fracciones de `SILO01` en una transacción atómica (2 pagos, 2 firmas); verifica saldos en Horizon y los errores `NOT_AUTHORIZED`, `INSUFFICIENT_FRACTIONS`, `INSUFFICIENT_USDC` |
+| S4–S7 | Pendientes |
 | M1 | **Hecho** en modo mock; falta `docs/api-mock-curl.md` |
 | M3–M8 | **Hechos en modo mock** (12 pruebas en `api/test/`); falta probarlos con Stellar real |
 | M2 | Pendiente: hoy el almacén es en memoria, falta `db.json` y `seed.json` |

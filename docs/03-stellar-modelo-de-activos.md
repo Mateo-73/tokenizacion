@@ -187,7 +187,7 @@ explorerTx(hash)                                 // → URL
 1. [x] `setup-stellar.js` crea y fondea las 4 cuentas; claves en `.stellar-keys.json`.
 2. [x] Flags activos en `ISSUER` (verificar en el explorador).
 3. [x] `issueAsset` para `SILO01` y `SOYA01`; el distribuidor muestra el total.
-4. [ ] `createDemoInvestor` + `authorizeInvestor` + `buyFractions` funcionan **por script**, con `txHash` visible en el explorador.
+4. [x] `createDemoInvestor` + `authorizeInvestor` + `buyFractions` funcionan **por script** (`npm run demo:buy`), con `txHash` visible en el explorador.
 5. [ ] `getPortfolio` refleja la compra.
 6. [ ] `distributeReturns` paga USDC proporcional.
 7. [ ] `recordTrace` + `verifyTrace`.

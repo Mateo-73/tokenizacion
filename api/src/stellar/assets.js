@@ -1,4 +1,5 @@
-import { Operation } from '@stellar/stellar-sdk';
+import { Keypair, Operation } from '@stellar/stellar-sdk';
+import { AppError } from '../errors.js';
 import { findBalance, fractionAsset, server, submit } from './client.js';
 import { loadKeys } from './keys.js';
 
@@ -48,6 +49,51 @@ export async function issueAsset({ code, totalFractions }) {
       destination: keys.DISTRIBUTOR.publicKey(),
       asset,
       amount: String(missing),
+    }),
+  ]);
+  return { txHash: hash };
+}
+
+/**
+ * Convierte la clave secreta de un inversionista demo en un Keypair, con un error claro si es inválida.
+ * @param {string} secret
+ */
+export function investorKeypair(secret) {
+  try {
+    return Keypair.fromSecret(secret);
+  } catch {
+    throw new AppError('STELLAR_ERROR', 'La clave secreta del inversionista no es válida.');
+  }
+}
+
+/**
+ * KYC simulado (docs/03 §4.3): el inversionista crea su trustline al asset y el emisor la autoriza.
+ * Con AUTH_REQUIRED, sin esta autorización nadie puede tener fracciones. Repetirlo no hace daño.
+ *
+ * @param {{ investorSecret: string, code: string }} args
+ * @returns {Promise<{ txHash: string }>}
+ */
+export async function authorizeInvestor({ investorSecret, code }) {
+  const keys = loadKeys();
+  const investor = investorKeypair(investorSecret);
+  const asset = fractionAsset(code);
+
+  if ((await mintedFractions(code)) === 0) {
+    throw new AppError('NOT_FOUND', `El activo ${code} no está emitido (ejecuta npm run seed).`);
+  }
+
+  // En Plan B lo firma el backend con la clave demo del inversionista.
+  const account = await server.loadAccount(investor.publicKey());
+  if (!findBalance(account.balances, asset)) {
+    await submit(investor, [Operation.changeTrust({ asset })]);
+  }
+
+  // El emisor autoriza la trustline = "KYC aprobado"
+  const { hash } = await submit(keys.ISSUER, [
+    Operation.setTrustLineFlags({
+      trustor: investor.publicKey(),
+      asset,
+      flags: { authorized: true },
     }),
   ]);
   return { txHash: hash };
