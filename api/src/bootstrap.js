@@ -1,6 +1,5 @@
-import { ASSETS } from './data/catalog.js';
-import { SEED_TRACE } from './data/seed-trace.js';
-import { createStore } from './data/store.js';
+import { createStore } from './data/db.js';
+import { seedStellar } from './seed.js';
 import { createServices } from './services/index.js';
 import { createMockStellar } from './services/mock-stellar.js';
 import * as stellar from './stellar/index.js';
@@ -14,20 +13,19 @@ function loadStellar(config) {
   return config.mockMode ? createMockStellar() : stellar;
 }
 
-/** Datos de ejemplo del modo mock: activos emitidos, hitos y un inversionista que ya compró. */
-async function seedMock(ctx, services) {
-  for (const asset of ASSETS) {
-    await ctx.stellar.issueAsset({ code: asset.id, totalFractions: asset.totalFractions });
-  }
-  for (const milestone of SEED_TRACE) await services.trace.add(milestone);
+/** Datos de ejemplo del modo mock: activos emitidos, hitos registrados y un inversionista que ya compró. */
+async function seedMock(ctx) {
+  await seedStellar({ stellar: ctx.stellar, store: ctx.store });
 
   const { publicKey, secret } = await ctx.stellar.createDemoInvestor({ initialUsdc: '1000000' });
   ctx.store.addInvestor({
-    investorId: 'inv_ejemplo',
+    id: 'inv_ejemplo',
     name: 'Inversionista de ejemplo',
     email: 'ejemplo@siembra.test',
     publicKey,
     secret,
+    authorizedAssets: [],
+    createdAt: new Date().toISOString(),
   });
   const purchases = [
     { code: 'SILO01', fractions: 120, price: '50.0000000' },
@@ -35,6 +33,7 @@ async function seedMock(ctx, services) {
   ];
   for (const { code, fractions, price } of purchases) {
     await ctx.stellar.authorizeInvestor({ investorSecret: secret, code });
+    ctx.store.markAuthorized('inv_ejemplo', code);
     await ctx.stellar.buyFractions({
       investorSecret: secret,
       code,
@@ -50,8 +49,10 @@ export async function createRuntime(baseConfig) {
     ? baseConfig
     : { ...baseConfig, issuerPublic: baseConfig.issuerPublic || loadKeys().ISSUER.publicKey() };
 
-  const ctx = { config, stellar: loadStellar(config), store: createStore() };
+  // Modo mock: datos solo en memoria (nunca toca db.json). Modo real: api/data/db.json.
+  const store = createStore({ persist: !config.mockMode });
+  const ctx = { config, stellar: loadStellar(config), store };
   const services = createServices(ctx);
-  if (config.mockMode) await seedMock(ctx, services);
+  if (config.mockMode) await seedMock(ctx);
   return { config, services };
 }

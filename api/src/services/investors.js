@@ -9,7 +9,7 @@ export function createInvestorsService(ctx) {
   async function toDto(investor) {
     const { usdcBalance } = await ctx.stellar.getPortfolio({ publicKey: investor.publicKey });
     return {
-      investorId: investor.investorId,
+      investorId: investor.id,
       name: investor.name,
       publicKey: investor.publicKey,
       usdcBalance,
@@ -18,12 +18,15 @@ export function createInvestorsService(ctx) {
 
   async function create(name, email) {
     const { publicKey, secret } = await ctx.stellar.createDemoInvestor({ initialUsdc: DEMO_USDC });
+    // Sin `await` entre pedir el id y guardar, para que dos altas simultáneas no repitan id.
     const investor = {
-      investorId: ctx.store.nextInvestorId(),
+      id: ctx.store.nextInvestorId(),
       name,
       email,
       publicKey,
       secret,
+      authorizedAssets: [],
+      createdAt: new Date().toISOString(),
     };
     ctx.store.addInvestor(investor);
     return investor;

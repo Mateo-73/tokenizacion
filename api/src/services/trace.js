@@ -1,14 +1,23 @@
 import { hashTrace } from '../trace-hash.js';
 
 export function createTraceService(ctx, { assets }) {
-  /** `verified`: el hash recalculado del hito guardado coincide con el registrado en Stellar. */
+  /**
+   * `verified`: el hash recalculado del hito guardado coincide con el registrado en Stellar.
+   * Un hito que aún no se registró (sin hash) no está verificado.
+   */
   async function toDto(milestone) {
-    const verified = await ctx.stellar.verifyTrace({
-      assetId: milestone.assetId,
-      order: milestone.order,
-      hash: hashTrace(milestone),
-    });
-    return { ...milestone, explorerUrl: ctx.stellar.explorerTx(milestone.txHash), verified };
+    const verified = milestone.hash
+      ? await ctx.stellar.verifyTrace({
+          assetId: milestone.assetId,
+          order: milestone.order,
+          hash: hashTrace(milestone),
+        })
+      : false;
+    return {
+      ...milestone,
+      explorerUrl: milestone.txHash ? ctx.stellar.explorerTx(milestone.txHash) : null,
+      verified,
+    };
   }
 
   return {

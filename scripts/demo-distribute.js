@@ -5,7 +5,7 @@
 // ⚠ Cada ejecución crea cuentas nuevas, COMPRA fracciones reales de SOYA01 y PAGA USDC de prueba
 //   desde TREASURY a todos los tenedores de SOYA01. Requiere `setup:stellar` y `seed`.
 // Uso: npm run demo:distribute
-import { findAssetDef } from '../api/src/data/catalog.js';
+import { findSeedAsset } from '../api/src/data/db.js';
 import { formatAmount, parseAmount } from '../api/src/money.js';
 import { createDemoInvestor } from '../api/src/stellar/accounts.js';
 import { authorizeInvestor } from '../api/src/stellar/assets.js';
@@ -16,7 +16,7 @@ import { distributeReturns } from '../api/src/stellar/returns.js';
 import { buyFractions } from '../api/src/stellar/trading.js';
 
 const CODE = 'SOYA01';
-const { totalFractions, pricePerFraction } = findAssetDef(CODE);
+const { totalFractions, pricePerFraction } = findSeedAsset(CODE);
 
 let failures = 0;
 const check = (ok, message) => {

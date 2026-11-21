@@ -85,7 +85,7 @@ Campos que **no** se guardan y se calculan al responder: `soldFractions`, `avail
   "assetId": "SILO01",
   "period": "2026-12",
   "totalUsdc": "2000.0000000",
-  "payouts": [{ "investorId": "inv_001", "publicKey": "G...", "fractions": 10, "usdc": "20.0000000" }],
+  "payouts": [{ "investorId": "inv_001", "publicKey": "G...", "fractions": 10, "usdc": "20.0000000", "txHash": "abc..." }],
   "txHashes": ["abc..."],
   "simulated": true,
   "createdAt": "2026-12-01T10:00:00.000Z"
@@ -118,6 +118,13 @@ Campos que **no** se guardan y se calculan al responder: `soldFractions`, `avail
 }
 ```
 `order` es **por activo** (cada activo empieza en 1).
+
+## Cómo lo implementa la API (`api/src/data/db.js`)
+- **Modo real (`MOCK_MODE=false`):** usa `api/data/db.json`. Si no existe, lo crea copiando `seed.json`; lo reescribe de forma atómica tras cada cambio y con permiso solo para el dueño (`600`), porque guarda claves demo.
+- **Modo mock (`MOCK_MODE=true`):** copia de la semilla **solo en memoria**; nunca crea ni toca `db.json`, para no mezclar claves falsas con las reales.
+- `payouts[].investorId` es `null` si la wallet que cobró no pertenece a un inversionista de la base. `payouts[].txHash` es el de la transacción (lote) en la que viajó cada pago; las URL del explorador no se guardan, se calculan al responder.
+- Los ids continúan tras reiniciar (máximo existente + 1). Los inversionistas con id no numérico (`inv_ejemplo`, solo en mock) no cuentan para el contador.
+- `npm run seed` emite los activos, registra en Stellar el hash de los hitos con `hash: null` y guarda `hash` y `txHash` en `db.json`. **No lo ejecutes con la API encendida** (dos procesos no pueden escribir el mismo archivo): ejecútalo y reinicia la API.
 
 ## Reglas
 1. Escritura atómica (archivo temporal + rename) para no corromper el JSON.

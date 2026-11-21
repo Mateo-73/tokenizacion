@@ -81,6 +81,8 @@ export const wrap = (fn) => (req, res, next) => fn(req, res).catch(next);
 ```
 
 ## 5. Datos (`src/services/db.js`)
+> En este repositorio vive en `api/src/data/db.js` (`createStore`), con los mismos métodos agrupados por colección; ver `docs/05` § "Cómo lo implementa la API".
+
 ```js
 import { readFileSync, writeFileSync, existsSync, mkdirSync, renameSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';

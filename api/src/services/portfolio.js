@@ -1,4 +1,3 @@
-import { findAssetDef } from '../data/catalog.js';
 import { formatAmount, parseAmount } from '../money.js';
 
 export function createPortfolioService(ctx, { investors }) {
@@ -8,14 +7,14 @@ export function createPortfolioService(ctx, { investors }) {
       const { usdcBalance, holdings } = await ctx.stellar.getPortfolio({
         publicKey: investor.publicKey,
       });
-      const returns = ctx.store.returnsFor(investor.investorId);
+      const returns = ctx.store.returnsFor(investor.id);
 
       return {
-        investorId: investor.investorId,
+        investorId: investor.id,
         publicKey: investor.publicKey,
         usdcBalance,
         holdings: holdings.flatMap(({ code, fractions }) => {
-          const asset = findAssetDef(code);
+          const asset = ctx.store.findAsset(code);
           if (!asset) return []; // assets ajenos a nuestro catálogo no se muestran
           const price = parseAmount(asset.pricePerFraction) ?? 0n;
           const received = returns
@@ -32,12 +31,12 @@ export function createPortfolioService(ctx, { investors }) {
             },
           ];
         }),
-        returns: returns.map(({ assetId, period, usdc, txHash, explorerUrl }) => ({
+        returns: returns.map(({ assetId, period, usdc, txHash }) => ({
           assetId,
           period,
           usdc,
           txHash,
-          explorerUrl,
+          explorerUrl: txHash ? ctx.stellar.explorerTx(txHash) : null,
         })),
       };
     },

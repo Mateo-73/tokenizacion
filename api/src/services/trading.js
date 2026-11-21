@@ -10,6 +10,7 @@ export function createTradingService(ctx, { assets, investors }) {
         investorSecret: investor.secret,
         code: asset.id,
       });
+      ctx.store.markAuthorized(investor.id, asset.id);
       return {
         authorized: true,
         assetId: asset.id,

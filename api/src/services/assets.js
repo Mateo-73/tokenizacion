@@ -1,4 +1,3 @@
-import { ASSETS, findAssetDef } from '../data/catalog.js';
 import { AppError } from '../errors.js';
 
 export function createAssetsService(ctx) {
@@ -8,12 +7,19 @@ export function createAssetsService(ctx) {
     return holders.reduce((sum, holder) => sum + holder.balance, 0);
   }
 
-  async function toDto(def) {
-    const sold = await soldFractions(def.id);
+  /** Activo del catálogo (lo que Stellar no guarda: textos, precio, etiquetas). */
+  function require(id) {
+    const asset = ctx.store.findAsset(id);
+    if (!asset) throw new AppError('NOT_FOUND', `No existe el activo ${id}.`);
+    return asset;
+  }
+
+  async function toDto(asset) {
+    const sold = await soldFractions(asset.id);
     return {
-      ...def,
+      ...asset,
       soldFractions: sold,
-      availableFractions: def.totalFractions - sold,
+      availableFractions: asset.totalFractions - sold,
       issuer: ctx.config.issuerPublic,
       simulated: true,
     };
@@ -21,19 +27,11 @@ export function createAssetsService(ctx) {
 
   return {
     soldFractions,
-
-    require(id) {
-      const def = findAssetDef(id);
-      if (!def) throw new AppError('NOT_FOUND', `No existe el activo ${id}.`);
-      return def;
-    },
-
-    list: () => Promise.all(ASSETS.map(toDto)),
-
+    require,
+    list: () => Promise.all(ctx.store.assets().map(toDto)),
     async get(id) {
-      const def = findAssetDef(id);
-      if (!def) throw new AppError('NOT_FOUND', `No existe el activo ${id}.`);
-      return { ...(await toDto(def)), traceCount: ctx.store.traceFor(id).length };
+      const asset = require(id);
+      return { ...(await toDto(asset)), traceCount: ctx.store.traceFor(id).length };
     },
   };
 }

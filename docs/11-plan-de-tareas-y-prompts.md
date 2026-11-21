@@ -14,8 +14,8 @@ Fechas: **hoy 20 nov (noche), 21 nov, 22 nov (cierre de envío)**. Confirmar con
 | S6 | **Hecho:** `recordTrace` y `verifyTrace` (hash SHA-256 en `manageData` del `ISSUER`); `npm run demo:trace` |
 | S7 | **Hecho:** `api/src/stellar/index.js` exporta todo el contrato sin stubs y la API lo usa con `MOCK_MODE=false`; flujo A→E recorrido contra testnet; README en `api/src/stellar/` |
 | M1 | **Hecho** en modo mock (la API es `api/src/`; el mock mantiene estado en memoria) |
-| M3–M8 | **Hechos**, con códigos de error alineados con docs/09; probados en modo mock y contra Stellar real (falta persistir en `db.json`, M2) |
-| M2 | Pendiente: hoy el almacén es en memoria; falta `db.json` y `seed.json` (docs/05) |
+| M3–M8 | **Hechos**, con códigos de error alineados con docs/09; probados en modo mock y contra Stellar real (con persistencia en `db.json`) |
+| M2 | **Hecho:** `api/data/seed.json` versionada y `api/data/db.json` (ignorado, escritura atómica, permiso 600) en modo real; en mock todo queda en memoria; sobrevive a reiniciar la API (probado contra testnet); `npm run seed` registra los hitos |
 | M9 | Pendiente: `npm test` corre el flujo en proceso y solo en mock; falta `npm run test:flow` contra la API local |
 
 ## 0. Cómo usar este documento

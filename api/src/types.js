@@ -38,35 +38,42 @@ export const TRACE_TYPES = ['siembra', 'insumos', 'cosecha', 'almacenaje', 'vent
  */
 
 /**
+ * Hito guardado en db.json. `hash` (SHA-256 en hex, 64 caracteres) y `txHash` son null hasta que el
+ * hito se registra en Stellar (`npm run seed`).
  * @typedef {TraceInput & {
  *   id: string,
  *   order: number,
- *   hash: string,
- *   txHash: string,
+ *   hash: string | null,
+ *   txHash: string | null,
  *   simulated: true,
- * }} TraceMilestone `hash` es SHA-256 en hex (64 caracteres)
+ * }} TraceMilestone
  */
 
 /** @typedef {TraceMilestone & { explorerUrl: string | null, verified: boolean }} TraceDto */
 
 /**
- * Inversionista demo custodial (Plan B). `secret` nunca sale en una respuesta.
+ * Inversionista demo custodial (Plan B). `secret` nunca sale en una respuesta ni en logs.
  * @typedef {object} Investor
- * @property {string} investorId
+ * @property {string} id inv_001
  * @property {string} name
  * @property {string} email
  * @property {string} publicKey
  * @property {string} secret
+ * @property {string[]} authorizedAssets caché de conveniencia; la verdad es la trustline en Stellar
+ * @property {string} createdAt
  */
 
 /**
- * @typedef {object} ReturnRecord
+ * Un reparto de retornos, con un pago por tenedor (docs/05).
+ * @typedef {object} Distribution
+ * @property {string} id ret_001
  * @property {string} assetId
- * @property {string} investorId
- * @property {string} period
- * @property {string} usdc
- * @property {string} txHash
- * @property {string | null} explorerUrl
+ * @property {string} period YYYY-MM
+ * @property {string} totalUsdc
+ * @property {{ investorId: string | null, publicKey: string, fractions: number, usdc: string, txHash: string }[]} payouts
+ * @property {string[]} txHashes
+ * @property {true} simulated
+ * @property {string} createdAt
  */
 
 /**
@@ -74,5 +81,5 @@ export const TRACE_TYPES = ['siembra', 'insumos', 'cosecha', 'almacenaje', 'vent
  * @typedef {object} Context
  * @property {import('./config.js').Config} config
  * @property {import('./services/stellar-port.js').StellarPort} stellar
- * @property {import('./data/store.js').Store} store
+ * @property {ReturnType<typeof import('./data/db.js').createStore>} store
  */

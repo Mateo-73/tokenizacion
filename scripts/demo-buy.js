@@ -5,7 +5,7 @@
 // ⚠ Cada ejecución crea cuentas nuevas y COMPRA de verdad 10 fracciones de SILO01 en testnet,
 //   así que bajan las fracciones disponibles del activo. Requiere `setup:stellar` y `seed`.
 // Uso: npm run demo:buy
-import { findAssetDef } from '../api/src/data/catalog.js';
+import { findSeedAsset } from '../api/src/data/db.js';
 import { authorizeInvestor } from '../api/src/stellar/assets.js';
 import { createDemoInvestor } from '../api/src/stellar/accounts.js';
 import {
@@ -22,7 +22,7 @@ import { buyFractions } from '../api/src/stellar/trading.js';
 const CODE = 'SILO01';
 const FRACTIONS = 10;
 const INITIAL_USDC = '1000';
-const price = findAssetDef(CODE).pricePerFraction;
+const price = findSeedAsset(CODE).pricePerFraction;
 
 let failures = 0;
 const check = (ok, message) => {

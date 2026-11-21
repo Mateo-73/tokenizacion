@@ -1,6 +1,6 @@
 // Solo lectura: muestra el portafolio de una wallet y los tenedores de cada activo (desde Horizon).
 // Uso: npm run portfolio -- <clave pública G...>      (sin clave, solo muestra los tenedores)
-import { ASSETS } from '../api/src/data/catalog.js';
+import { seedAssets } from '../api/src/data/db.js';
 import { explorerAccount } from '../api/src/stellar/client.js';
 import { findBalance, fractionAsset, loadAccount } from '../api/src/stellar/client.js';
 import { getHolders, getPortfolio } from '../api/src/stellar/portfolio.js';
@@ -21,7 +21,7 @@ try {
 
   const distributor = await loadAccount(loadKeys().DISTRIBUTOR.publicKey());
   console.log('Tenedores por activo (sin contar al DISTRIBUTOR):');
-  for (const { id, totalFractions } of ASSETS) {
+  for (const { id, totalFractions } of seedAssets()) {
     const holders = await getHolders({ code: id });
     const sold = holders.reduce((sum, holder) => sum + holder.balance, 0);
     const inDistributor = Number(

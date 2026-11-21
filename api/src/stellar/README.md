@@ -25,7 +25,7 @@ Los scripts viven en `scripts/` y solo importan módulos de `api/src/` (no paque
 | Comando | Para qué | Efecto en testnet |
 |---|---|---|
 | `npm run setup:stellar` | Crea y fondea las 4 cuentas, flags de autorización, USDC de prueba | Idempotente; hacerlo una sola vez |
-| `npm run seed` | Emite `SILO01` y `SOYA01` y verifica contra Horizon | Idempotente |
+| `npm run seed` | Emite `SILO01` y `SOYA01`, registra el hash de los hitos de la semilla y crea `api/data/db.json` | Idempotente. No lo ejecutes con la API encendida: reiníciala después |
 | `npm run portfolio -- <G...>` | Muestra el portafolio de una wallet y los tenedores | Solo lectura |
 | `npm run demo:trace` | Registra y verifica un hito en un activo de pruebas y lo borra | Limpia lo que crea |
 | `npm run demo:buy` | Flujo completo de compra y errores esperados | ⚠ Compra 10 fracciones de `SILO01` en cada ejecución |

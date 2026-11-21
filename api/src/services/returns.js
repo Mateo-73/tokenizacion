@@ -17,24 +17,22 @@ export function createReturnsService(ctx, { assets }) {
         totalFractions: asset.totalFractions,
       });
 
-      const result = payouts.map((payout) => {
-        const investor = ctx.store.findInvestorByPublicKey(payout.publicKey);
-        if (investor) {
-          ctx.store.addReturn({
-            assetId: asset.id,
-            investorId: investor.investorId,
-            period: input.period,
-            usdc: payout.usdc,
-            txHash: payout.txHash,
-            explorerUrl: ctx.stellar.explorerTx(payout.txHash),
-          });
-        }
-        return {
-          investorId: investor?.investorId ?? null,
-          publicKey: payout.publicKey,
-          fractions: payout.fractions,
-          usdc: payout.usdc,
-        };
+      // Cada pago, con el inversionista al que pertenece la wallet (null si no es de la base)
+      const paid = payouts.map((payout) => ({
+        investorId: ctx.store.findInvestorByPublicKey(payout.publicKey)?.id ?? null,
+        publicKey: payout.publicKey,
+        fractions: payout.fractions,
+        usdc: payout.usdc,
+        txHash: payout.txHash,
+      }));
+
+      ctx.store.addReturn({
+        assetId: asset.id,
+        period: input.period,
+        totalUsdc: formatAmount(total),
+        payouts: paid,
+        txHashes,
+        simulated: true,
       });
 
       return {
@@ -42,7 +40,12 @@ export function createReturnsService(ctx, { assets }) {
         period: input.period,
         totalUsdc: formatAmount(total),
         simulated: true,
-        payouts: result,
+        payouts: paid.map(({ investorId, publicKey, fractions, usdc }) => ({
+          investorId,
+          publicKey,
+          fractions,
+          usdc,
+        })),
         txHashes,
         explorerUrls: txHashes.map((hash) => ctx.stellar.explorerTx(hash)),
       };
