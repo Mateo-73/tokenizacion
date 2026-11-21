@@ -8,7 +8,8 @@
     "start": "node src/server.js",
     "setup:stellar": "node ../scripts/setup-stellar.js",
     "seed": "node ../scripts/seed.js",
-    "demo:buy": "node ../scripts/demo-buy.js"
+    "demo:buy": "node ../scripts/demo-buy.js",
+    "portfolio": "node ../scripts/show-portfolio.js"
   },
   "type": "module",
   "private": true,

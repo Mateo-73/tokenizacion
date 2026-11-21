@@ -20,6 +20,8 @@ export const AUTH_REVOCABLE = AuthRevocableFlag;
 export const usdcAsset = () => new Asset('USDC', loadKeys().USDC_ISSUER.publicKey());
 export const fractionAsset = (code) => new Asset(code, loadKeys().ISSUER.publicKey());
 export const explorerTx = (hash) => `https://stellar.expert/explorer/testnet/tx/${hash}`;
+export const explorerAccount = (publicKey) =>
+  `https://stellar.expert/explorer/testnet/account/${publicKey}`;
 
 /** Error de Horizon con los códigos de resultado (`op_no_trust`, `op_underfunded`, ...). */
 export class StellarTxError extends AppError {
@@ -113,4 +115,16 @@ export function findBalance(balances, asset) {
     (balance) =>
       balance.asset_code === asset.getCode() && balance.asset_issuer === asset.getIssuer(),
   );
+}
+
+/** Carga una cuenta de Horizon; si falla, lanza un StellarTxError con un mensaje claro. */
+export async function loadAccount(publicKey) {
+  try {
+    return await server.loadAccount(publicKey);
+  } catch (err) {
+    if (err?.response?.status === 404) {
+      throw new StellarTxError(`La cuenta ${publicKey} no existe en Stellar.`, [], false);
+    }
+    throw toStellarError(err);
+  }
 }

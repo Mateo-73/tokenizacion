@@ -1,6 +1,6 @@
 import { Keypair, Operation } from '@stellar/stellar-sdk';
 import { AppError } from '../errors.js';
-import { findBalance, fractionAsset, server, submit } from './client.js';
+import { findBalance, fractionAsset, loadAccount, server, submit } from './client.js';
 import { loadKeys } from './keys.js';
 
 /** Fracciones del asset que ya existen en la red (todas autorizadas, por AUTH_REQUIRED). */
@@ -27,7 +27,7 @@ export async function issueAsset({ code, totalFractions }) {
   const asset = fractionAsset(code);
 
   // 1) el distribuidor confía en el asset (se salta si ya hay trustline)
-  const distributor = await server.loadAccount(keys.DISTRIBUTOR.publicKey());
+  const distributor = await loadAccount(keys.DISTRIBUTOR.publicKey());
   if (!findBalance(distributor.balances, asset)) {
     await submit(keys.DISTRIBUTOR, [Operation.changeTrust({ asset })]);
   }
@@ -83,7 +83,7 @@ export async function authorizeInvestor({ investorSecret, code }) {
   }
 
   // En Plan B lo firma el backend con la clave demo del inversionista.
-  const account = await server.loadAccount(investor.publicKey());
+  const account = await loadAccount(investor.publicKey());
   if (!findBalance(account.balances, asset)) {
     await submit(investor, [Operation.changeTrust({ asset })]);
   }

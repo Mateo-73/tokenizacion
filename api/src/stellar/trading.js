@@ -2,7 +2,14 @@ import { Operation } from '@stellar/stellar-sdk';
 import { AppError } from '../errors.js';
 import { formatAmount, parseAmount } from '../money.js';
 import { investorKeypair } from './assets.js';
-import { StellarTxError, findBalance, fractionAsset, server, submit, usdcAsset } from './client.js';
+import {
+  StellarTxError,
+  findBalance,
+  fractionAsset,
+  loadAccount,
+  submit,
+  usdcAsset,
+} from './client.js';
 import { loadKeys } from './keys.js';
 
 /** Traduce los códigos de Horizon de la compra a los errores del contrato (docs/04). */
@@ -49,8 +56,8 @@ export async function buyFractions({ investorSecret, code, fractions, pricePerFr
   const usdc = usdcAsset();
 
   const [investorAccount, distributorAccount] = await Promise.all([
-    server.loadAccount(investor.publicKey()),
-    server.loadAccount(keys.DISTRIBUTOR.publicKey()),
+    loadAccount(investor.publicKey()),
+    loadAccount(keys.DISTRIBUTOR.publicKey()),
   ]);
 
   const line = findBalance(investorAccount.balances, asset);

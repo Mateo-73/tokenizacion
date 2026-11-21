@@ -9,6 +9,7 @@ import { findAssetDef } from '../api/src/data/catalog.js';
 import { authorizeInvestor } from '../api/src/stellar/assets.js';
 import { createDemoInvestor } from '../api/src/stellar/accounts.js';
 import {
+  explorerAccount,
   explorerTx,
   findBalance,
   fractionAsset,
@@ -146,8 +147,4 @@ try {
 } catch (err) {
   console.error('\nFalló:', err instanceof Error ? err.message : err);
   process.exitCode = 1;
-}
-
-function explorerAccount(publicKey) {
-  return `https://stellar.expert/explorer/testnet/account/${publicKey}`;
 }

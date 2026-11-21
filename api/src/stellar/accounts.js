@@ -7,7 +7,7 @@ import {
   accountExists,
   findBalance,
   fundWithFriendbot,
-  server,
+  loadAccount,
   submit,
   usdcAsset,
 } from './client.js';
@@ -46,7 +46,7 @@ export async function setupAccounts(log = () => {}) {
     }
   }
 
-  const issuer = await server.loadAccount(keys.ISSUER.publicKey());
+  const issuer = await loadAccount(keys.ISSUER.publicKey());
   if (issuer.flags.auth_required && issuer.flags.auth_revocable) {
     log('ISSUER: flags AUTH_REQUIRED y AUTH_REVOCABLE ya activos');
   } else {
@@ -56,7 +56,7 @@ export async function setupAccounts(log = () => {}) {
 
   const usdc = usdcAsset();
   for (const name of ['DISTRIBUTOR', 'TREASURY']) {
-    const account = await server.loadAccount(keys[name].publicKey());
+    const account = await loadAccount(keys[name].publicKey());
     if (findBalance(account.balances, usdc)) {
       log(`${name}: ya confía en USDC`);
     } else {
@@ -65,7 +65,7 @@ export async function setupAccounts(log = () => {}) {
     }
   }
 
-  const treasury = await server.loadAccount(keys.TREASURY.publicKey());
+  const treasury = await loadAccount(keys.TREASURY.publicKey());
   if (Number(findBalance(treasury.balances, usdc)?.balance ?? 0) >= TREASURY_MIN_USDC) {
     log('TREASURY: ya tiene USDC de prueba');
   } else {
