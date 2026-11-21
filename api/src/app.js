@@ -18,7 +18,9 @@ export function createApp(config, services) {
 
   const onError = (err, _req, res, _next) => {
     const appError = toAppError(err);
-    if (appError.code === 'INTERNAL') console.error(err);
+    // Nunca se registran cuerpos de petición ni secretos (docs/10): solo el código y el mensaje.
+    console.error(`[${appError.code}] ${appError.message}`);
+    if (appError.cause) console.error(appError.cause.stack ?? appError.cause);
     res
       .status(HTTP_STATUS[appError.code])
       .json({ error: { code: appError.code, message: appError.message } });

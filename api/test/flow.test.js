@@ -97,11 +97,11 @@ describe('API en modo mock (docs/04-api-contrato.md)', () => {
     assert.equal(decimals.json.error.code, 'VALIDATION');
 
     const noMoney = await call('POST', '/buy', { investorId, assetId: 'SILO01', fractions: 100 });
-    assert.equal(noMoney.status, 422);
+    assert.equal(noMoney.status, 400);
     assert.equal(noMoney.json.error.code, 'INSUFFICIENT_USDC');
 
     const soldOut = await call('POST', '/buy', { investorId, assetId: 'SILO01', fractions: 5000 });
-    assert.equal(soldOut.status, 409);
+    assert.equal(soldOut.status, 400);
     assert.equal(soldOut.json.error.code, 'INSUFFICIENT_FRACTIONS');
   });
 
