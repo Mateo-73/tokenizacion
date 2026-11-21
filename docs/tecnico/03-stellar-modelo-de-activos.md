@@ -28,7 +28,9 @@ Las fracciones son **enteras**: Stellar admite hasta 7 decimales, así que la AP
 - Con `AUTH_REQUIRED`, nadie puede tener fracciones hasta que el emisor autorice su trustline. Eso implementa el "solo wallets verificadas".
 - Con `AUTH_REVOCABLE`, el emisor puede revocar la autorización (útil para explicar cumplimiento).
 
-## 4. Código base (`api/src/stellar/client.js`)
+## 4. Código base (`api/src/stellar/client.ts`)
+> Los fragmentos de este documento están escritos en JavaScript por brevedad. El proyecto usa **TypeScript estricto**: al llevarlos a `api/src/stellar/` hay que tiparlos (los montos siguen siendo `string`).
+
 ```js
 import { Horizon, Networks, TransactionBuilder, BASE_FEE, Keypair, Asset, Operation } from '@stellar/stellar-sdk';
 
@@ -58,7 +60,7 @@ export const fractionAsset = (code) => new Asset(code, process.env.ISSUER_PUBLIC
 export const explorerTx = (hash) => `https://stellar.expert/explorer/testnet/tx/${hash}`;
 ```
 
-### 4.1 Setup inicial (`scripts/setup-stellar.js`)
+### 4.1 Setup inicial (`scripts/setup-stellar.ts`)
 1. Generar keypairs de `ISSUER`, `DISTRIBUTOR`, `TREASURY`, `USDC_ISSUER` con `Keypair.random()`.
 2. Fondear las cuatro con Friendbot.
 3. Guardar las claves (públicas y secretas) en `api/.stellar-keys.json`; imprimir las líneas `*_PUBLIC` para pegarlas en `api/.env`.
@@ -69,7 +71,7 @@ await submit(issuerKp, [Operation.setOptions({ setFlags: AUTH_REQUIRED | AUTH_RE
 5. `DISTRIBUTOR` y `TREASURY` crean trustline a USDC (`Operation.changeTrust({ asset: usdcAsset() })`).
 6. `USDC_ISSUER` paga USDC de prueba a `TREASURY` (por ejemplo 100000) para simular fondos de retornos.
 
-### 4.2 Emitir un activo (`assets.js` → `issueAsset`)
+### 4.2 Emitir un activo (`assets.ts` → `issueAsset`)
 ```js
 const asset = fractionAsset(code);
 // 1) el distribuidor confía en el asset
@@ -96,7 +98,7 @@ await submit(issuerKp, [Operation.setTrustLineFlags({
 ```
 El inversionista también necesita trustline a `USDC` (se crea al crearlo, ver 4.7).
 
-### 4.4 Compra atómica (`trading.js` → `buyFractions`)
+### 4.4 Compra atómica (`trading.ts` → `buyFractions`)
 Una sola transacción con dos pagos: si falla uno, falla todo.
 ```js
 const total = (fractions * pricePerFraction).toFixed(7);
@@ -144,7 +146,7 @@ Devolver `txHashes` y la lista de pagos.
 3. `USDC_ISSUER` le paga USDC de prueba (por ejemplo 1000) → "fondeo de demo".
 4. Guardar `publicKey` y `secret` en `api/data/db.json` (solo testnet, en `.gitignore`).
 
-### 4.8 Trazabilidad (`trace.js`)
+### 4.8 Trazabilidad (`trace.ts`)
 Cada hito se resume en un hash SHA-256 que se guarda on-chain como entrada de datos de la cuenta `ISSUER`.
 ```js
 import { createHash } from 'node:crypto';
@@ -160,7 +162,7 @@ await submit(issuerKp, [Operation.manageData({ name: `t.${assetId}.${order}`, va
 ### 4.9 Opcional: reventa en el DEX
 `Operation.manageSellOffer({ selling: fractionAsset(code), buying: usdcAsset(), amount, price })`. Solo si el núcleo ya funciona; el comprador necesita trustline autorizada al asset.
 
-## 5. Interfaz exportada para Mateo (`api/src/stellar/index.js`)
+## 5. Interfaz exportada para Mateo (`api/src/stellar/index.ts`)
 Todas son `async`. Los montos son strings; los errores se lanzan como `Error` con `.code` (`NOT_AUTHORIZED`, `INSUFFICIENT_USDC`, `INSUFFICIENT_FRACTIONS`, `STELLAR_ERROR`).
 ```js
 setupAccounts()                                  // idempotente; usado por el script de setup
@@ -177,14 +179,14 @@ explorerTx(hash)                                 // → URL
 ```
 
 ## 6. Lista de verificación para Sebas (en este orden)
-1. [ ] `setup-stellar.js` crea y fondea las 4 cuentas; claves en `.stellar-keys.json`.
+1. [ ] `setup-stellar.ts` crea y fondea las 4 cuentas; claves en `.stellar-keys.json`.
 2. [ ] Flags activos en `ISSUER` (verificar en el explorador).
 3. [ ] `issueAsset` para `SILO01` y `SOYA01`; el distribuidor muestra el total.
 4. [ ] `createDemoInvestor` + `authorizeInvestor` + `buyFractions` funcionan **por script**, con `txHash` visible en el explorador.
 5. [ ] `getPortfolio` refleja la compra.
 6. [ ] `distributeReturns` paga USDC proporcional.
 7. [ ] `recordTrace` + `verifyTrace`.
-8. [ ] Exportar todo desde `stellar/index.js` con las firmas de arriba.
+8. [ ] Exportar todo desde `stellar/index.ts` con las firmas de arriba.
 9. [ ] (Opcional) reventa en DEX.
 
 ## 7. Errores típicos

@@ -29,7 +29,7 @@
 `ISSUER` (emite fracciones, flags de autorización), `DISTRIBUTOR` (guarda fracciones sin vender y recibe pagos), `TREASURY` (paga retornos), `USDC_ISSUER` (USDC de prueba).
 
 ## Interfaz entre Sebas y Mateo
-Mateo **no** usa el SDK de Stellar directamente. Llama a las funciones exportadas por `api/src/stellar/index.js` (firmas en docs/tecnico/03). Así cada uno trabaja sin pisarse.
+Mateo **no** usa el SDK de Stellar directamente. Llama a las funciones exportadas por `api/src/stellar/index.ts` (firmas en docs/tecnico/03). Así cada uno trabaja sin pisarse.
 
 ## Modo mock
 `MOCK_MODE=true` hace que la API responda con datos fijos sin tocar Stellar. Mateo lo entrega en la primera hora para que Luis no espere. En mock, los `txHash` son falsos y el `explorerUrl` es `null`.
@@ -70,13 +70,13 @@ siembra/
 │     ├─ 03-stellar-modelo-de-activos.md
 │     └─ 04-api-contrato.md
 ├─ scripts/                   ← utilidades sueltas de Stellar (Sebas)
-├─ api/                       ← backend: Node.js 20+ + Express (ESM)
+├─ api/                       ← backend: Node.js 20+ + Express 5 + TypeScript
 │  ├─ package.json            ("type": "module")
 │  ├─ .env / .env.example
 │  ├─ .stellar-keys.json      ← generado, en .gitignore
 │  ├─ data/db.json            ← runtime, en .gitignore (puede contener claves demo)
 │  └─ src/
-│     ├─ server.js            ← arranque de Express, CORS, montaje de rutas
+│     ├─ server.ts            ← arranque de Express, CORS, montaje de rutas
 │     ├─ routes/              ← capa HTTP: valida la petición y llama a services (Mateo)
 │     ├─ services/            ← reglas de negocio, mock y acceso a db.json (Mateo)
 │     ├─ data/                ← esquema y lectura/escritura de db.json (Mateo)
@@ -85,7 +85,7 @@ siembra/
    └─ src/
       ├─ pages/               ← pantallas de la ruta (catálogo, ficha, compra, portafolio)
       ├─ components/          ← piezas reutilizables de UI
-      ├─ lib/api.js           ← único punto de llamadas HTTP a la API
+      ├─ lib/api.ts           ← único punto de llamadas HTTP a la API
       └─ mocks/               ← respuestas de docs/tecnico/04 para trabajar sin backend
 ```
 
@@ -102,7 +102,7 @@ routes  →  services  →  stellar/ (red Stellar)
 - `routes/` no conoce Stellar ni `db.json`; solo valida la entrada y responde.
 - `services/` aplica reglas (fracciones disponibles, autorización) y llama a `stellar/` y a `data/`.
 - `stellar/` es la única carpeta que importa `@stellar/stellar-sdk`.
-- El frontend solo llama a la API a través de `web/src/lib/api.js`.
+- El frontend solo llama a la API a través de `web/src/lib/api.ts`.
 
 ## Flujo de datos en una compra (resumen)
 Web → `POST /api/buy` → `services/buy` valida (fracciones disponibles, autorización) → `stellar.buyFractions(...)` arma una transacción atómica (pago USDC del inversionista al distribuidor + pago de fracciones del distribuidor al inversionista) → devuelve `txHash` → API responde → Web muestra confirmación con enlace al explorador.

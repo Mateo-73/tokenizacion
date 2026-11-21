@@ -44,8 +44,8 @@ Para que `MOCK_MODE=true` funcione sin Stellar, revisa `docs/tecnico/02-stack-te
 │  ├─ proyecto/       ← visión, alcance, flujos de usuario, contexto y workflow del equipo
 │  └─ tecnico/        ← arquitectura, stack, modelo de activos Stellar y contrato de API
 ├─ scripts/           ← utilidades (instalación, setup de Stellar)
-├─ api/               ← backend: Node.js + Express
-└─ web/               ← frontend: React + Vite + Tailwind
+├─ api/               ← backend: Node.js + Express + TypeScript
+└─ web/               ← frontend: React + Vite + Tailwind + TypeScript
 ```
 
 ## Documentación
