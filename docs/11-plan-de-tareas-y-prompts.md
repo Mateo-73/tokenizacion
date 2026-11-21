@@ -18,7 +18,8 @@ Fechas: **hoy 20 nov (noche), 21 nov, 22 nov (cierre de envío)**. Confirmar con
 | S3 | **Hecho (hito):** `npm run demo:buy` crea un inversionista con 1.000 USDC, lo autoriza y compra 10 fracciones de `SILO01` en una transacción atómica (2 pagos, 2 firmas); verifica saldos en Horizon y los errores `NOT_AUTHORIZED`, `INSUFFICIENT_FRACTIONS`, `INSUFFICIENT_USDC` |
 | S4 | **Hecho:** `getPortfolio` y `getHolders` leen de Horizon; `npm run portfolio -- <clave>` muestra el portafolio y comprueba que vendidas = total − distribuidor |
 | S5 | **Hecho:** `distributeReturns` paga desde `TREASURY` proporcional a las fracciones sobre el total, redondeo hacia abajo a 7 decimales, sin pagar al `DISTRIBUTOR`, lotes de 50; `npm run demo:distribute` lo verifica con 2 inversionistas contra Horizon |
-| S6–S7 | Pendientes |
+| S6 | **Hecho:** `recordTrace` guarda el SHA-256 del hito en `manageData` del `ISSUER` (`t.<assetId>.<order>`); `verifyTrace` da `true` si coincide y `false` si el texto cambió; `npm run demo:trace` lo comprueba contra Horizon |
+| S7 | Pendiente: cerrar `api/src/stellar/index.js` y conectar la API real |
 | M1 | **Hecho** en modo mock; falta `docs/api-mock-curl.md` |
 | M3–M8 | **Hechos en modo mock** (12 pruebas en `api/test/`); falta probarlos con Stellar real |
 | M2 | Pendiente: hoy el almacén es en memoria, falta `db.json` y `seed.json` |

@@ -1,4 +1,4 @@
-import { hashTrace } from './trace-hash.js';
+import { hashTrace } from '../trace-hash.js';
 
 export function createTraceService(ctx, { assets }) {
   /** `verified`: el hash recalculado del hito guardado coincide con el registrado en Stellar. */

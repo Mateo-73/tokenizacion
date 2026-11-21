@@ -165,6 +165,7 @@ await submit(issuerKp, [Operation.manageData({ name: `t.${assetId}.${order}`, va
 > - `distributeReturns` devuelve `payouts: [{ publicKey, fractions, usdc, txHash }]` (el `txHash` del lote en que viajó cada pago).
 > - `explorerTx(hash)` es síncrona y devuelve `string | null` (`null` en modo mock).
 > - `getHolders` no incluye la cuenta `DISTRIBUTOR`.
+> - `recordTrace` no reescribe lo ya registrado: con el mismo hash devuelve `txHash: null`; con otro contenido lanza `VALIDATION`. `hashTrace` vive en `api/src/trace-hash.js`, compartido con `services/`.
 > - `issueAsset` es idempotente: si el asset ya estaba emitido no emite nada y devuelve `txHash: null`.
 > - Para conectar `stellar/` hay que devolverlo en `loadStellar` (`api/src/bootstrap.js`) cuando `MOCK_MODE=false`. `services/mock-stellar.js` es una implementación completa de referencia.
 
@@ -190,7 +191,7 @@ explorerTx(hash)                                 // → URL
 4. [x] `createDemoInvestor` + `authorizeInvestor` + `buyFractions` funcionan **por script** (`npm run demo:buy`), con `txHash` visible en el explorador.
 5. [x] `getPortfolio` refleja la compra (`npm run portfolio -- <clave pública>`).
 6. [x] `distributeReturns` paga USDC proporcional (`npm run demo:distribute`).
-7. [ ] `recordTrace` + `verifyTrace`.
+7. [x] `recordTrace` + `verifyTrace` (`npm run demo:trace`).
 8. [ ] Exportar todo desde `stellar/index.js` con las firmas de arriba.
 9. [ ] (Opcional) reventa en DEX.
 

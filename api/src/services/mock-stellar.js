@@ -2,7 +2,7 @@ import { randomBytes } from 'node:crypto';
 import { AppError } from '../errors.js';
 import { formatAmount, parseAmount } from '../money.js';
 
-import { hashTrace } from './trace-hash.js';
+import { hashTrace } from '../trace-hash.js';
 
 const BASE32 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
 const BATCH_SIZE = 50;
