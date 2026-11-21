@@ -6,18 +6,12 @@
 /docs/                          @BRafa34 @DiegoSiSte
 /README.md                      @BRafa34 @DiegoSiSte
 
-# Backend: lógica de negocio y rutas: Mateo
-/api/src/routes/                @Mateo-73
-/api/src/services/              @Mateo-73
-/api/src/data/                  @Mateo-73
-
-# Todo lo que toca la red Stellar y los scripts: Sebas
-/api/src/stellar/               @sebaselprogramador
-/scripts/                       @sebaselprogramador
+# Backend (rutas, servicios, datos y capa Stellar) y scripts: Mateo
+/api/                           @Mateo-73
+/scripts/                       @Mateo-73
 
 # Frontend: Luis
 /web/                           @4NG3L35
 
-# Documentación técnica con dueño propio (el contrato lo implementa Mateo y lo consume Luis)
-/docs/tecnico/04-api-contrato.md        @Mateo-73 @4NG3L35
-/docs/tecnico/03-stellar-modelo-de-activos.md  @sebaselprogramador
+# El contrato de API lo implementa Mateo y lo consume Luis
+/docs/04-api-contrato.md        @Mateo-73 @4NG3L35

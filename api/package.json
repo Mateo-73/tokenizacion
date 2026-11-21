@@ -1,15 +1,13 @@
 {
   "name": "siembra-api",
   "version": "0.1.0",
-  "description": "API de Siembra (Express 5 + TypeScript)",
+  "description": "API de Siembra (Express 5)",
   "scripts": {
-    "test": "tsx --test test/*.test.ts",
-    "dev": "tsx watch src/server.ts",
-    "build": "tsc -p tsconfig.build.json",
-    "start": "node dist/server.js",
-    "typecheck": "tsc --noEmit",
-    "setup:stellar": "tsx ../scripts/setup-stellar.ts",
-    "seed": "tsx ../scripts/seed.ts"
+    "test": "node --test test/*.test.js",
+    "dev": "nodemon src/server.js",
+    "start": "node src/server.js",
+    "setup:stellar": "node ../scripts/setup-stellar.js",
+    "seed": "node ../scripts/seed.js"
   },
   "type": "module",
   "private": true,
@@ -17,15 +15,12 @@
     "node": ">=20"
   },
   "dependencies": {
+    "@stellar/stellar-sdk": "17.4.0",
     "cors": "2.8.6",
     "dotenv": "18.0.10",
     "express": "5.3.0"
   },
   "devDependencies": {
-    "@types/cors": "2.8.19",
-    "@types/express": "5.0.6",
-    "@types/node": "26.6.6",
-    "tsx": "4.23.15",
-    "typescript": "7.0.2"
+    "nodemon": "3.1.14"
   }
 }

@@ -24,6 +24,16 @@ cp api/.env.example api/.env
 cp web/.env.example web/.env
 ```
 
+### Cuentas de Stellar (importante: no vienen con el repo)
+
+Las claves secretas de las cuentas de testnet están en `api/.stellar-keys.json`. **Ese archivo no se sube a git**, así que al clonar no lo tendrás. Cada persona debe ponerlo a mano en su propia máquina:
+
+1. Pídele el archivo a quien ejecutó `npm run setup:stellar` (Mateo), por un canal privado.
+2. Guárdalo como `api/.stellar-keys.json`.
+3. Completa en `api/.env` las líneas `ISSUER_PUBLIC`, `DISTRIBUTOR_PUBLIC`, `TREASURY_PUBLIC` y `USDC_ISSUER_PUBLIC` (las claves públicas están dentro de ese archivo).
+
+No ejecutes `npm run setup:stellar` por tu cuenta si vas a trabajar con las cuentas del equipo: generaría cuentas distintas, con otro USDC y otros activos. Sin el archivo, puedes trabajar igual con `MOCK_MODE=true`.
+
 ### Comandos desde la raíz
 
 | Comando | Qué hace |
@@ -32,40 +42,37 @@ cp web/.env.example web/.env
 | `npm run dev` | Levanta la API (`http://localhost:3001`) y la web (`http://localhost:5173`) a la vez |
 | `npm run dev:api` / `npm run dev:web` | Levanta solo una de las dos |
 | `npm --prefix api test` | Ejecuta las pruebas de la API (flujo completo en modo mock) |
-| `npm --prefix api run typecheck` | Verifica los tipos de TypeScript de la API |
 | `npm run setup:stellar` | Crea y fondea las cuentas en testnet (una sola vez) |
 | `npm run seed` | Emite `SILO01` y `SOYA01` y carga los datos de ejemplo |
 
-Para que `MOCK_MODE=true` funcione sin Stellar, revisa `docs/tecnico/02-stack-tecnologico.md`.
+Para trabajar sin Stellar usa `MOCK_MODE=true` (ver `docs/02-stack-tecnologico.md`).
 
 ## Estructura del repositorio
 
 ```
 ├─ CLAUDE.md          ← contexto del proyecto para Claude Code
-├─ docs/
-│  ├─ proyecto/       ← visión, alcance, flujos de usuario, contexto y workflow del equipo
-│  └─ tecnico/        ← arquitectura, stack, modelo de activos Stellar y contrato de API
+├─ docs/              ← documentación (00 a 11, ver abajo)
 ├─ scripts/           ← utilidades (instalación, setup de Stellar)
-├─ api/               ← backend: Node.js + Express + TypeScript
-└─ web/               ← frontend: React + Vite + Tailwind + TypeScript
+├─ api/               ← backend: Node.js + Express (JavaScript)
+└─ web/               ← frontend: React + Vite + Tailwind (JavaScript)
 ```
 
 ## Documentación
 
-Antes de tocar código, lee `CLAUDE.md` y el documento de tu área:
+Antes de tocar código, lee `CLAUDE.md` y el documento de tu área (todo está en `docs/`):
 
-- [Visión y alcance](docs/proyecto/00-vision-y-alcance.md)
-- [Flujos de usuario y guion de demo](docs/proyecto/06-flujos-de-usuario.md)
-- [Workflow del equipo](docs/proyecto/workflow-equipo.md)
-- [Contexto del proyecto](docs/proyecto/contexto-proyecto.md)
-- [Arquitectura](docs/tecnico/01-arquitectura.md)
-- [Stack tecnológico](docs/tecnico/02-stack-tecnologico.md)
-- [Modelo de activos en Stellar](docs/tecnico/03-stellar-modelo-de-activos.md)
-- [Contrato de API](docs/tecnico/04-api-contrato.md)
+- [00 · Visión y alcance](docs/00-vision-y-alcance.md)
+- [01 · Arquitectura](docs/01-arquitectura.md)
+- [02 · Stack tecnológico](docs/02-stack-tecnologico.md)
+- [03 · Modelo de activos en Stellar](docs/03-stellar-modelo-de-activos.md)
+- [04 · Contrato de API](docs/04-api-contrato.md) (manda sobre cualquier otra lista de endpoints)
+- [06 · Flujos de usuario y guion de demo](docs/06-flujos-de-usuario.md)
+- [11 · Plan de tareas y prompts](docs/11-plan-de-tareas-y-prompts.md)
+- [Contexto del proyecto](docs/contexto-proyecto.md) y [workflow del equipo](docs/workflow-equipo.md)
 
 ## Reglas de oro
 
 1. Solo testnet. Nunca claves, fondos ni cuentas reales.
 2. Nunca commitear `.env`, `api/.stellar-keys.json` ni `api/data/db.json`.
-3. El contrato de API (`docs/tecnico/04-api-contrato.md`) manda.
+3. El contrato de API (`docs/04-api-contrato.md`) manda.
 4. Una rama por tarea, PRs pequeños, revisión en menos de 30 minutos.
