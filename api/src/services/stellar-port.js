@@ -10,7 +10,8 @@
  *
  * @typedef {object} StellarPort
  *
- * @property {(args: { code: string, totalFractions: number }) => Promise<{ txHash: string }>} issueAsset
+ * @property {(args: { code: string, totalFractions: number }) => Promise<{ txHash: string | null }>} issueAsset
+ *   Idempotente: si el asset ya estaba emitido no emite nada y `txHash` es null.
  *
  * @property {(args: { initialUsdc: string }) => Promise<{ publicKey: string, secret: string }>} createDemoInvestor
  *

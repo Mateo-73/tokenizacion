@@ -3,6 +3,7 @@ import {
   AUTH_REQUIRED,
   AUTH_REVOCABLE,
   accountExists,
+  findBalance,
   fundWithFriendbot,
   server,
   submit,
@@ -14,21 +15,6 @@ import { ACCOUNT_NAMES, createKeys, keysExist, loadKeys } from './keys.js';
 const TREASURY_USDC = '100000';
 /** Si TREASURY tiene menos que esto, se vuelve a fondear. */
 const TREASURY_MIN_USDC = 1000;
-
-function hasTrustline(balances, asset) {
-  return balances.some((b) => {
-    const balance = b;
-    return balance.asset_code === asset.getCode() && balance.asset_issuer === asset.getIssuer();
-  });
-}
-
-function balanceOf(balances, asset) {
-  const found = balances.find((b) => {
-    const balance = b;
-    return balance.asset_code === asset.getCode() && balance.asset_issuer === asset.getIssuer();
-  });
-  return Number(found?.balance ?? 0);
-}
 
 /**
  * Prepara las 4 cuentas del proyecto en testnet (idempotente: se puede ejecutar varias veces):
@@ -69,7 +55,7 @@ export async function setupAccounts(log = () => {}) {
   const usdc = usdcAsset();
   for (const name of ['DISTRIBUTOR', 'TREASURY']) {
     const account = await server.loadAccount(keys[name].publicKey());
-    if (hasTrustline(account.balances, usdc)) {
+    if (findBalance(account.balances, usdc)) {
       log(`${name}: ya confía en USDC`);
     } else {
       await submit(keys[name], [Operation.changeTrust({ asset: usdc })]);
@@ -78,7 +64,7 @@ export async function setupAccounts(log = () => {}) {
   }
 
   const treasury = await server.loadAccount(keys.TREASURY.publicKey());
-  if (balanceOf(treasury.balances, usdc) >= TREASURY_MIN_USDC) {
+  if (Number(findBalance(treasury.balances, usdc)?.balance ?? 0) >= TREASURY_MIN_USDC) {
     log('TREASURY: ya tiene USDC de prueba');
   } else {
     await submit(keys.USDC_ISSUER, [

@@ -165,6 +165,7 @@ await submit(issuerKp, [Operation.manageData({ name: `t.${assetId}.${order}`, va
 > - `distributeReturns` devuelve `payouts: [{ publicKey, fractions, usdc, txHash }]` (el `txHash` del lote en que viajó cada pago).
 > - `explorerTx(hash)` es síncrona y devuelve `string | null` (`null` en modo mock).
 > - `getHolders` no incluye la cuenta `DISTRIBUTOR`.
+> - `issueAsset` es idempotente: si el asset ya estaba emitido no emite nada y devuelve `txHash: null`.
 > - Para conectar `stellar/` hay que devolverlo en `loadStellar` (`api/src/bootstrap.js`) cuando `MOCK_MODE=false`. `services/mock-stellar.js` es una implementación completa de referencia.
 
 Todas son `async`. Los montos son strings; los errores se lanzan como `Error` con `.code` (`NOT_AUTHORIZED`, `INSUFFICIENT_USDC`, `INSUFFICIENT_FRACTIONS`, `STELLAR_ERROR`).
@@ -185,7 +186,7 @@ explorerTx(hash)                                 // → URL
 ## 6. Lista de verificación de `api/src/stellar/` (en este orden)
 1. [x] `setup-stellar.js` crea y fondea las 4 cuentas; claves en `.stellar-keys.json`.
 2. [x] Flags activos en `ISSUER` (verificar en el explorador).
-3. [ ] `issueAsset` para `SILO01` y `SOYA01`; el distribuidor muestra el total.
+3. [x] `issueAsset` para `SILO01` y `SOYA01`; el distribuidor muestra el total.
 4. [ ] `createDemoInvestor` + `authorizeInvestor` + `buyFractions` funcionan **por script**, con `txHash` visible en el explorador.
 5. [ ] `getPortfolio` refleja la compra.
 6. [ ] `distributeReturns` paga USDC proporcional.

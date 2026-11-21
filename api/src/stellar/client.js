@@ -106,3 +106,11 @@ export async function accountExists(publicKey) {
     throw toStellarError(err);
   }
 }
+
+/** Saldo de `asset` dentro de los `balances` de una cuenta de Horizon; undefined si no hay trustline. */
+export function findBalance(balances, asset) {
+  return balances.find(
+    (balance) =>
+      balance.asset_code === asset.getCode() && balance.asset_issuer === asset.getIssuer(),
+  );
+}
