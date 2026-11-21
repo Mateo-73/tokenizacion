@@ -50,7 +50,7 @@ dist
 ## Variables de entorno — `api/.env.example`
 ```
 PORT=3001
-MOCK_MODE=true                            # pasar a false cuando api/src/stellar/ esté conectado
+MOCK_MODE=true                            # true: Stellar simulado, sin red · false: Stellar testnet real (necesita api/.stellar-keys.json)
 HORIZON_URL=https://horizon-testnet.stellar.org
 STELLAR_NETWORK=testnet
 ADMIN_KEY=cambiar-por-un-valor-largo      # header x-admin-key para endpoints de admin

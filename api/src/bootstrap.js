@@ -3,18 +3,15 @@ import { SEED_TRACE } from './data/seed-trace.js';
 import { createStore } from './data/store.js';
 import { createServices } from './services/index.js';
 import { createMockStellar } from './services/mock-stellar.js';
+import * as stellar from './stellar/index.js';
+import { loadKeys } from './stellar/keys.js';
 
 /**
- * Elige la implementación de Stellar.
- * TODO: cuando `api/src/stellar/index.js` exporte todas las funciones de `StellarPort`
- * (ver services/stellar-port.js), devolverla aquí en el modo real:
- *   import * as stellar from './stellar/index.js';  ->  return stellar;
+ * Elige la implementación de Stellar: la simulada en memoria (MOCK_MODE=true) o la red real
+ * (api/src/stellar/, necesita api/.stellar-keys.json: `npm run setup:stellar` y `npm run seed`).
  */
 function loadStellar(config) {
-  if (config.mockMode) return createMockStellar();
-  throw new Error(
-    'MOCK_MODE=false necesita api/src/stellar/index.js completo. Conéctalo en loadStellar (src/bootstrap.js).',
-  );
+  return config.mockMode ? createMockStellar() : stellar;
 }
 
 /** Datos de ejemplo del modo mock: activos emitidos, hitos y un inversionista que ya compró. */
@@ -47,7 +44,12 @@ async function seedMock(ctx, services) {
   }
 }
 
-export async function createRuntime(config) {
+export async function createRuntime(baseConfig) {
+  // En modo real, el emisor sale de las claves generadas por `setup:stellar` si ISSUER_PUBLIC no está en el .env
+  const config = baseConfig.mockMode
+    ? baseConfig
+    : { ...baseConfig, issuerPublic: baseConfig.issuerPublic || loadKeys().ISSUER.publicKey() };
+
   const ctx = { config, stellar: loadStellar(config), store: createStore() };
   const services = createServices(ctx);
   if (config.mockMode) await seedMock(ctx, services);

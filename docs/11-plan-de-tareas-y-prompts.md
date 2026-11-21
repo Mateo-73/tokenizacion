@@ -12,9 +12,9 @@ Fechas: **hoy 20 nov (noche), 21 nov, 22 nov (cierre de envío)**. Confirmar con
 | S4 | **Hecho:** `getPortfolio` y `getHolders` leen de Horizon; `npm run portfolio -- <clave>` |
 | S5 | **Hecho:** `distributeReturns` proporcional, redondeo hacia abajo, lotes de 50; `npm run demo:distribute` |
 | S6 | **Hecho:** `recordTrace` y `verifyTrace` (hash SHA-256 en `manageData` del `ISSUER`); `npm run demo:trace` |
-| S7 | Pendiente: cerrar `api/src/stellar/index.js` y conectar la API real (`loadStellar` en `api/src/bootstrap.js`) |
+| S7 | **Hecho:** `api/src/stellar/index.js` exporta todo el contrato sin stubs y la API lo usa con `MOCK_MODE=false`; flujo A→E recorrido contra testnet; README en `api/src/stellar/` |
 | M1 | **Hecho** en modo mock (la API es `api/src/`; el mock mantiene estado en memoria) |
-| M3–M8 | **Hechos en modo mock**, con códigos de error alineados con docs/09; falta probarlos con Stellar real (S7) |
+| M3–M8 | **Hechos**, con códigos de error alineados con docs/09; probados en modo mock y contra Stellar real (falta persistir en `db.json`, M2) |
 | M2 | Pendiente: hoy el almacén es en memoria; falta `db.json` y `seed.json` (docs/05) |
 | M9 | Pendiente: `npm test` corre el flujo en proceso y solo en mock; falta `npm run test:flow` contra la API local |
 

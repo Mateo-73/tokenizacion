@@ -167,7 +167,8 @@ await submit(issuerKp, [Operation.manageData({ name: `t.${assetId}.${order}`, va
 > - `getHolders` no incluye la cuenta `DISTRIBUTOR`.
 > - `recordTrace` no reescribe lo ya registrado: con el mismo hash devuelve `txHash: null`; con otro contenido lanza `VALIDATION`. `hashTrace` vive en `api/src/trace-hash.js`, compartido con `services/`.
 > - `issueAsset` es idempotente: si el asset ya estaba emitido no emite nada y devuelve `txHash: null`.
-> - Para conectar `stellar/` hay que devolverlo en `loadStellar` (`api/src/bootstrap.js`) cuando `MOCK_MODE=false`. `services/mock-stellar.js` es una implementación completa de referencia.
+> - `api/src/stellar/index.js` ya exporta todo el contrato y `loadStellar` (`api/src/bootstrap.js`) lo usa cuando `MOCK_MODE=false`. `services/mock-stellar.js` es la implementación simulada; `api/test/stellar-port.test.js` falla si se desalinean.
+> - Más detalle y los scripts en `api/src/stellar/README.md`.
 
 Todas son `async`. Los montos son strings; los errores se lanzan como `Error` con `.code` (`NOT_AUTHORIZED`, `INSUFFICIENT_USDC`, `INSUFFICIENT_FRACTIONS`, `STELLAR_ERROR`).
 ```js
@@ -192,7 +193,7 @@ explorerTx(hash)                                 // → URL
 5. [x] `getPortfolio` refleja la compra (`npm run portfolio -- <clave pública>`).
 6. [x] `distributeReturns` paga USDC proporcional (`npm run demo:distribute`).
 7. [x] `recordTrace` + `verifyTrace` (`npm run demo:trace`).
-8. [ ] Exportar todo desde `stellar/index.js` con las firmas de arriba.
+8. [x] Exportar todo desde `stellar/index.js` con las firmas de arriba.
 9. [ ] (Opcional) reventa en DEX.
 
 ## 7. Errores típicos

@@ -47,4 +47,16 @@
  *   URL al explorador, o null si no hay (modo mock). Es síncrona: solo arma una URL.
  */
 
-export {};
+/** Nombres de los métodos del contrato; la prueba `stellar-port.test.js` exige que el mock y la red real los tengan todos. */
+export const STELLAR_PORT_METHODS = [
+  'issueAsset',
+  'createDemoInvestor',
+  'authorizeInvestor',
+  'buyFractions',
+  'getPortfolio',
+  'getHolders',
+  'distributeReturns',
+  'recordTrace',
+  'verifyTrace',
+  'explorerTx',
+];
