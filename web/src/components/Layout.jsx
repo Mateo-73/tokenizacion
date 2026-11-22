@@ -12,7 +12,7 @@ export function Layout() {
   }, [pathname]);
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-dvh flex-col">
       <Navbar />
       {pathname !== '/' && <TestnetNotice />}
       <main className="flex-1">

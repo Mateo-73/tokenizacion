@@ -15,10 +15,10 @@ export function Footer() {
           </p>
         </div>
         <nav aria-label="Pie de página" className="-ml-3 flex gap-2 sm:-mr-3 sm:ml-0 sm:justify-end">
-          <Link to="/" className="inline-flex min-h-11 items-center rounded-xl px-3 text-sm font-medium text-white/80 transition duration-150 hover:bg-white/10 hover:text-white">
+          <Link to="/" className="inline-flex min-h-11 items-center rounded-xl px-3 text-sm font-medium text-white/80 transition-colors duration-150 hover:bg-white/10 hover:text-white">
             Activos
           </Link>
-          <Link to="/portafolio" className="inline-flex min-h-11 items-center rounded-xl px-3 text-sm font-medium text-white/80 transition duration-150 hover:bg-white/10 hover:text-white">
+          <Link to="/portafolio" className="inline-flex min-h-11 items-center rounded-xl px-3 text-sm font-medium text-white/80 transition-colors duration-150 hover:bg-white/10 hover:text-white">
             Portafolio
           </Link>
         </nav>

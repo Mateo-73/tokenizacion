@@ -23,8 +23,10 @@ export function fractions(value) {
 }
 
 export function percent(part, total) {
-  const ratio = toNumber(total) > 0 ? toNumber(part) / toNumber(total) : 0;
-  return percentage.format(Math.min(1, Math.max(0, ratio)));
+  const ratio = toNumber(total) > 0 ? Math.min(1, Math.max(0, toNumber(part) / toNumber(total))) : 0;
+  if (ratio > 0 && ratio < 0.01) return `< ${percentage.format(0.01)}`;
+  if (ratio > 0.99 && ratio < 1) return `> ${percentage.format(0.99)}`;
+  return percentage.format(ratio);
 }
 
 export function formatDate(value) {

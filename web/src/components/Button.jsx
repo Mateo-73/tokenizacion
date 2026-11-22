@@ -2,7 +2,7 @@ import { LoaderCircle } from 'lucide-react';
 import { Link } from 'react-router';
 
 const base =
-  'inline-flex min-h-11 items-center justify-center gap-2 rounded-xl px-5 text-sm font-semibold transition duration-150 ease-out select-none disabled:pointer-events-none disabled:opacity-55 active:scale-[0.98]';
+  'press inline-flex min-h-11 items-center justify-center gap-2 rounded-xl px-5 text-sm font-semibold disabled:pointer-events-none disabled:opacity-55';
 
 const variants = {
   primary: 'bg-siembra-700 text-white shadow-soft hover:bg-siembra-900',

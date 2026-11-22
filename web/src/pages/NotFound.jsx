@@ -5,7 +5,7 @@ import { usePageTitle } from '../lib/usePageTitle.js';
 export function NotFound() {
   usePageTitle('Página no encontrada');
   return (
-    <section className="container-page flex animate-fade-in flex-col items-center py-16 text-center sm:py-24">
+    <section className="container-page flex flex-col items-center py-16 text-center sm:py-24">
       <span className="flex size-16 items-center justify-center rounded-2xl bg-siembra-100 text-siembra-700">
         <Compass size={32} aria-hidden="true" />
       </span>

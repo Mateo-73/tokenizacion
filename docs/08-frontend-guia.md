@@ -122,5 +122,5 @@ Siempre con `try/catch`: el almacenamiento puede fallar.
 Para la demo se corre en local (`npm run dev`) o con `npm run build && npm run preview`. Si se despliega, las variables de entorno van en la plataforma, nunca en el repo.
 
 ## 10. Lista de verificación de Luis
-- [x] L1 scaffold y mocks · [x] L2 catálogo · [ ] L3 ficha y trazabilidad · [ ] L4 entrada (demo, luego Pollar)
+- [x] L1 scaffold y mocks · [x] L2 catálogo · [x] L3 ficha y trazabilidad · [x] L4 entrada demo
 - [ ] L5 portafolio · [ ] L6 admin · [ ] L7 estados · [ ] L8 API real · [ ] L9 pulido con docs/07

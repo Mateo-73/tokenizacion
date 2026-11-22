@@ -31,6 +31,7 @@ function fail(code, message) {
 const wait = () => new Promise((resolve) => setTimeout(resolve, 300 + Math.floor(Math.random() * 301)));
 const clone = (value) => structuredClone(value);
 const isText = (value) => typeof value === 'string' && value.trim().length > 0;
+const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const ISSUER = fakeKey();
 
@@ -128,13 +129,15 @@ export const mockApi = {
 
   async createDemoInvestor({ name, email } = {}) {
     await wait();
-    if (!isText(name) || !isText(email) || !email.includes('@')) fail('VALIDATION', 'Nombre y email son obligatorios.');
-    let investor = [...investors.values()].find((item) => item.email === email.trim().toLowerCase());
+    if (!isText(name) || name.trim().length > 100) fail('VALIDATION', '"name" es obligatorio y debe ser texto.');
+    if (!isText(email) || email.trim().length > 254 || !EMAIL.test(email.trim())) fail('VALIDATION', '"email" no es un correo válido.');
+    const normalizedEmail = email.trim().toLowerCase();
+    let investor = [...investors.values()].find((item) => item.email === normalizedEmail);
     if (!investor) {
       investor = {
         investorId: `inv_${String(investorSequence++).padStart(3, '0')}`,
         name: name.trim(),
-        email: email.trim().toLowerCase(),
+        email: normalizedEmail,
         publicKey: fakeKey(),
         usdcBalance: toUnits(INITIAL_USDC),
       };
