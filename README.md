@@ -101,6 +101,8 @@ Para probar un endpoint puntual con `curl`, está [`docs/api-mock-curl.md`](docs
 
 Guion completo en [`docs/06`](docs/06-flujos-de-usuario.md) y [`docs/14`](docs/14-demo-y-pitch.md).
 
+**Demo en vivo (modo simulado):** https://siembra-stellar.vercel.app
+
 ## Presentación
 
 [Siembra: Tokenización Agrícola en Stellar (Google Slides)](https://docs.google.com/presentation/d/17gAMO1-TBrURtR5rrdbgC-k3umPnN-aOMOWl92kmaBI/edit?usp=sharing)
