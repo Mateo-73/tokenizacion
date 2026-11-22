@@ -159,7 +159,11 @@ export function BuyPanel({ asset, balance, balanceStatus, onPurchased }) {
                     <ShieldCheck size={15} aria-hidden="true" />
                     Identidad verificada (simulada)
                   </p>
-                  <TxLink explorerUrl={verificationResult?.explorerUrl} className="mt-1" />
+                  <TxLink
+                    explorerUrl={verificationResult?.explorerUrl}
+                    label="Ver transacción de autorización"
+                    className="mt-1"
+                  />
                 </m.div>
               ) : (
                 <div key="pending">

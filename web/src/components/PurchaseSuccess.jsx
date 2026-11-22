@@ -29,6 +29,14 @@ export function PurchaseSuccess({ result }) {
           <p className="tabular mt-1 text-sm text-siembra-900/80">
             {fractions(count)} {count === 1 ? 'fracción' : 'fracciones'} por {usdc(result.totalUsdc)}
           </p>
+          {result.explorerUrl && (
+            <p className="mt-1 text-xs text-siembra-900/70">
+              Memo en Stellar:{' '}
+              <span className="font-semibold">
+                SIEMBRA COMPRA {result.assetId} {count}x
+              </span>
+            </p>
+          )}
           <div className="mt-1 flex flex-wrap items-center gap-x-4">
             <TxLink explorerUrl={result.explorerUrl} />
             <Link
