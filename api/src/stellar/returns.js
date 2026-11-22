@@ -95,6 +95,8 @@ export async function distributeReturns({ code, totalUsdc, totalFractions }) {
             amount: formatAmount(payout.stroops),
           }),
         ),
+        [],
+        `SIEMBRA RETORNO ${code} ${index + 1}`,
       );
       txHashes.push(hash);
       for (const payout of batch) {

@@ -4,6 +4,7 @@ import {
   AuthRevocableFlag,
   BASE_FEE,
   Horizon,
+  Memo,
   Networks,
   TransactionBuilder,
 } from '@stellar/stellar-sdk';
@@ -59,11 +60,23 @@ function toStellarError(err) {
 }
 
 /**
+ * Recorta una etiqueta a los 28 bytes que admite un memo de texto de Stellar. Se limita a ASCII
+ * imprimible para no partir un carácter UTF-8 a mitad: las etiquetas del API son siempre ASCII.
+ *
+ * @param {string} text
+ * @returns {string}
+ */
+export function shortMemo(text) {
+  return String(text).replace(/[^\x20-\x7e]/g, ' ').slice(0, 28);
+}
+
+/**
  * Construye, firma y envía una transacción. `source` es la cuenta de la transacción (paga la comisión
  * y aporta el número de secuencia); `extraSigners` firman operaciones cuyo `source` es otra cuenta.
+ * `memo` es la etiqueta legible que muestra el explorador junto al hash (no es un alias on-chain).
  * Reintenta una vez ante fallos de red o `tx_bad_seq`.
  */
-export async function submit(source, ops, extraSigners = []) {
+export async function submit(source, ops, extraSigners = [], memo = null) {
   const signers = extraSigners.filter((kp) => kp.publicKey() !== source.publicKey());
   for (let attempt = 0; ; attempt++) {
     try {
@@ -73,6 +86,7 @@ export async function submit(source, ops, extraSigners = []) {
         networkPassphrase: NETWORK,
       });
       ops.forEach((op) => builder.addOperation(op));
+      if (memo) builder.addMemo(Memo.text(shortMemo(memo)));
       const tx = builder.setTimeout(60).build();
       tx.sign(source, ...signers);
       const result = await server.submitTransaction(tx);
