@@ -92,8 +92,8 @@ export function createStore({ dbPath = DB_PATH, persist = true } = {}) {
       data.trace.push(milestone);
       save();
     },
-    /** Hitos que aún no se registraron en Stellar (`hash` null). */
-    pendingTrace: () => data.trace.filter((m) => m.hash === null),
+    /** Hitos sin registrar en Stellar (sin `hash`) o a los que aún falta recuperar el `txHash`. */
+    pendingTrace: () => data.trace.filter((m) => m.hash === null || !m.txHash),
     setTraceHash(id, { hash, txHash }) {
       const milestone = data.trace.find((m) => m.id === id);
       if (!milestone) throw new Error(`No existe el hito ${id}`);
