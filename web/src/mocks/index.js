@@ -128,13 +128,14 @@ export const mockApi = {
 
   async createDemoInvestor({ name, email } = {}) {
     await wait();
-    if (!isText(name) || !isText(email) || !email.includes('@')) fail('VALIDATION', 'Nombre y email son obligatorios.');
-    let investor = [...investors.values()].find((item) => item.email === email.trim().toLowerCase());
+    if (!isText(name) || (email != null && email !== '' && (!isText(email) || !email.includes('@')))) fail('VALIDATION', 'Revisa los datos ingresados.');
+    const normalizedEmail = email ? email.trim().toLowerCase() : null;
+    let investor = normalizedEmail ? [...investors.values()].find((item) => item.email === normalizedEmail) : null;
     if (!investor) {
       investor = {
         investorId: `inv_${String(investorSequence++).padStart(3, '0')}`,
         name: name.trim(),
-        email: email.trim().toLowerCase(),
+        email: normalizedEmail,
         publicKey: fakeKey(),
         usdcBalance: toUnits(INITIAL_USDC),
       };

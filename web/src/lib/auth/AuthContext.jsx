@@ -3,7 +3,6 @@ import { api } from '../api.js';
 
 const AuthContext = createContext(null);
 const STORAGE_KEY = 'siembra.investor';
-const DEMO_INVESTOR = { name: 'Inversionista demo', email: 'demo@siembra.bo' };
 
 function load() {
   try {
@@ -29,11 +28,11 @@ export function AuthProvider({ children }) {
   const [investor, setInvestor] = useState(load);
   const [loading, setLoading] = useState(false);
 
-  const login = useCallback(async () => {
+  const login = useCallback(async ({ name, email } = {}) => {
     setLoading(true);
     try {
-      const { investorId, name, publicKey } = await api.createDemoInvestor(DEMO_INVESTOR);
-      const session = { investorId, name, publicKey };
+      const created = await api.createDemoInvestor({ name, ...(email ? { email } : {}) });
+      const session = { investorId: created.investorId, name: created.name, publicKey: created.publicKey };
       save(session);
       setInvestor(session);
       return session;
