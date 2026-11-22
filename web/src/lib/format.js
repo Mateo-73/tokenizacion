@@ -1,7 +1,35 @@
-const money = new Intl.NumberFormat('es-BO', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-const integer = new Intl.NumberFormat('es-BO', { maximumFractionDigits: 0 });
-const date = new Intl.DateTimeFormat('es-BO', { dateStyle: 'medium', timeZone: 'UTC' });
+const LOCALE = 'es-BO';
 
-export function usdc(value) { return `${money.format(Number(value) || 0)} USDC`; }
-export function fractions(value) { return integer.format(Number(value) || 0); }
-export function formatDate(value) { if (!value) return ''; const parsed = new Date(`${value}`.length === 10 ? `${value}T00:00:00Z` : value); return Number.isNaN(parsed.getTime()) ? '' : date.format(parsed); }
+const money = new Intl.NumberFormat(LOCALE, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const integer = new Intl.NumberFormat(LOCALE, { maximumFractionDigits: 0 });
+const percentage = new Intl.NumberFormat(LOCALE, { style: 'percent', maximumFractionDigits: 0 });
+const day = new Intl.DateTimeFormat(LOCALE, { dateStyle: 'medium', timeZone: 'UTC' });
+
+const toNumber = (value) => {
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? parsed : 0;
+};
+
+export function amount(value) {
+  return money.format(toNumber(value));
+}
+
+export function usdc(value) {
+  return `${amount(value)} USDC`;
+}
+
+export function fractions(value) {
+  return integer.format(Math.trunc(toNumber(value)));
+}
+
+export function percent(part, total) {
+  const ratio = toNumber(total) > 0 ? toNumber(part) / toNumber(total) : 0;
+  return percentage.format(Math.min(1, Math.max(0, ratio)));
+}
+
+export function formatDate(value) {
+  if (!value) return '';
+  const text = String(value);
+  const parsed = new Date(/^\d{4}-\d{2}-\d{2}$/.test(text) ? `${text}T00:00:00Z` : text);
+  return Number.isNaN(parsed.getTime()) ? '' : day.format(parsed);
+}

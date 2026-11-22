@@ -1,15 +1,56 @@
-import { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import { createContext, useCallback, useContext, useMemo, useState } from 'react';
 import { api } from '../api.js';
 
 const AuthContext = createContext(null);
 const STORAGE_KEY = 'siembra.investor';
-function load() { try { return JSON.parse(localStorage.getItem(STORAGE_KEY)); } catch { return null; } }
-function save(investor) { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(investor)); } catch {} }
-function clear() { try { localStorage.removeItem(STORAGE_KEY); } catch {} }
+const DEMO_INVESTOR = { name: 'Inversionista demo', email: 'demo@siembra.bo' };
+
+function load() {
+  try {
+    return JSON.parse(localStorage.getItem(STORAGE_KEY));
+  } catch {
+    return null;
+  }
+}
+
+function save(investor) {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(investor));
+  } catch {}
+}
+
+function clear() {
+  try {
+    localStorage.removeItem(STORAGE_KEY);
+  } catch {}
+}
+
 export function AuthProvider({ children }) {
-  const [investor, setInvestor] = useState(null); const [loading, setLoading] = useState(true);
-  useEffect(() => { setInvestor(load()); setLoading(false); }, []);
-  const value = useMemo(() => ({ investor, loading, async login() { const result = await api.createDemoInvestor({ name: 'Inversionista demo', email: 'demo@siembra.bo' }); const session = { investorId: result.investorId, name: result.name, publicKey: result.publicKey }; save(session); setInvestor(session); return session; }, logout() { clear(); setInvestor(null); } }), [investor, loading]);
+  const [investor, setInvestor] = useState(load);
+  const [loading, setLoading] = useState(false);
+
+  const login = useCallback(async () => {
+    setLoading(true);
+    try {
+      const { investorId, name, publicKey } = await api.createDemoInvestor(DEMO_INVESTOR);
+      const session = { investorId, name, publicKey };
+      save(session);
+      setInvestor(session);
+      return session;
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  const logout = useCallback(() => {
+    clear();
+    setInvestor(null);
+  }, []);
+
+  const value = useMemo(() => ({ investor, loading, login, logout }), [investor, loading, login, logout]);
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
-export function useAuth() { return useContext(AuthContext); }
+
+export function useAuth() {
+  return useContext(AuthContext);
+}

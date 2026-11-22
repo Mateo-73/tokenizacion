@@ -7,4 +7,9 @@ const messages = {
   STELLAR_ERROR: 'La red Stellar no respondió. Reintenta en unos segundos.',
   NETWORK: 'No pudimos conectar con el servidor. Reintenta en unos segundos.',
 };
-export function errorMessage(error) { return messages[error?.code] ?? 'Algo salió mal. Reintenta.'; }
+
+const FALLBACK = 'Algo salió mal. Reintenta.';
+
+export function errorMessage(error) {
+  return messages[error?.code] ?? FALLBACK;
+}
