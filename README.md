@@ -101,6 +101,10 @@ Para probar un endpoint puntual con `curl`, está [`docs/api-mock-curl.md`](docs
 
 Guion completo en [`docs/06`](docs/06-flujos-de-usuario.md) y [`docs/14`](docs/14-demo-y-pitch.md).
 
+## Presentación
+
+[Siembra: Tokenización Agrícola en Stellar (Google Slides)](https://docs.google.com/presentation/d/17gAMO1-TBrURtR5rrdbgC-k3umPnN-aOMOWl92kmaBI/edit?usp=sharing)
+
 ## Despliegue en Vercel
 
 El repo incluye un `vercel.json` que publica **el frontend** (`web/`) como sitio estático, con reescritura de rutas para React Router.
