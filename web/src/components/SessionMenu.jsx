@@ -1,5 +1,6 @@
 import { Check, ChevronDown, Copy, LogOut, Wallet } from 'lucide-react';
 import { useEffect, useId, useRef, useState } from 'react';
+import { shortKey } from '../lib/format.js';
 import { Link } from 'react-router';
 import { AnimatePresence, m } from 'motion/react';
 import { EASE_OUT } from '../lib/motion.js';
@@ -17,7 +18,6 @@ function initials(name) {
   return picked.map((word) => firstGrapheme(word).toLocaleUpperCase('es')).join('');
 }
 
-const shortKey = (key) => (key.length > 14 ? `${key.slice(0, 6)}…${key.slice(-6)}` : key);
 
 const itemClass = 'press flex min-h-11 w-full items-center gap-2 rounded-xl px-3 text-sm font-semibold';
 

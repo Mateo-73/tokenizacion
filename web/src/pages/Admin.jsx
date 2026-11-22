@@ -9,7 +9,7 @@ import { TxLink } from '../components/TxLink.jsx';
 import { VerifiedBadge } from '../components/VerifiedBadge.jsx';
 import { api } from '../lib/api.js';
 import { errorMessage } from '../lib/errors.js';
-import { formatDate, formatPeriod, fractions, usdc } from '../lib/format.js';
+import { formatDate, formatPeriod, fractions, shortKey, usdc } from '../lib/format.js';
 import { EASE_OUT } from '../lib/motion.js';
 import { usePageTitle } from '../lib/usePageTitle.js';
 
@@ -118,14 +118,18 @@ function DistributionResult({ result, assetName }) {
           <ul className="mt-1 max-h-80 divide-y divide-siembra-700/10 overflow-y-auto overscroll-contain pr-1">
             {result.payouts.map((payout, index) => (
               <m.li
-                key={`${payout.investorId}-${index}`}
+                key={`${payout.investorId ?? payout.publicKey}-${index}`}
                 initial={{ opacity: 0, x: -8 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.26, delay: PAYOUT_DELAYS[Math.min(index, PAYOUT_DELAYS.length - 1)], ease: EASE_OUT }}
                 className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-0.5 py-2 text-sm"
               >
                 <span className="min-w-0 wrap-anywhere text-texto">
-                  {payout.investorId}
+                  {payout.investorId || (
+                    <span className="font-mono text-xs" title={payout.publicKey}>
+                      {shortKey(payout.publicKey)}
+                    </span>
+                  )}
                   <span className="text-texto-suave">
                     {' '}
                     con {fractions(payout.fractions)} {Number(payout.fractions) === 1 ? 'fracción' : 'fracciones'}

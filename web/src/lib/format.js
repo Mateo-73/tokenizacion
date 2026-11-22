@@ -43,3 +43,8 @@ export function formatPeriod(value) {
   if (!match) return String(value ?? '');
   return month.format(new Date(Date.UTC(Number(match[1]), Number(match[2]) - 1, 1)));
 }
+
+export function shortKey(key) {
+  if (!key) return 'Tenedor';
+  return key.length > 14 ? `${key.slice(0, 6)}…${key.slice(-6)}` : key;
+}
