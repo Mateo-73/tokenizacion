@@ -26,13 +26,16 @@ function NavLinks() {
 function Session() {
   const { investor } = useAuth();
   const [showLogin, setShowLogin] = useState(false);
-  if (investor) return <SessionMenu />;
   return (
     <>
-      <Button onClick={() => setShowLogin(true)} className="shrink-0">
-        <span className="hidden sm:inline">Entrar como inversionista demo</span>
-        <span className="sm:hidden">Entrar</span>
-      </Button>
+      {investor ? (
+        <SessionMenu />
+      ) : (
+        <Button onClick={() => setShowLogin(true)} className="shrink-0">
+          <span className="hidden sm:inline">Entrar como inversionista demo</span>
+          <span className="sm:hidden">Entrar</span>
+        </Button>
+      )}
       {showLogin && <DemoLoginDialog onClose={() => setShowLogin(false)} />}
     </>
   );

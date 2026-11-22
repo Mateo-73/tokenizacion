@@ -104,6 +104,9 @@
     color: var(--color-siembra-900);
     text-wrap: balance;
   }
+  p {
+    text-wrap: pretty;
+  }
   html {
     -webkit-tap-highlight-color: transparent;
   }
