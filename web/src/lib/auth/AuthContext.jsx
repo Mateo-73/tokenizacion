@@ -28,10 +28,10 @@ export function AuthProvider({ children }) {
   const [investor, setInvestor] = useState(load);
   const [loading, setLoading] = useState(false);
 
-  const login = useCallback(async ({ name, email } = {}) => {
+  const login = useCallback(async ({ name, email }) => {
     setLoading(true);
     try {
-      const created = await api.createDemoInvestor({ name, ...(email ? { email } : {}) });
+      const created = await api.createDemoInvestor({ name, email });
       const session = { investorId: created.investorId, name: created.name, publicKey: created.publicKey };
       save(session);
       setInvestor(session);
