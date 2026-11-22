@@ -32,6 +32,8 @@ Los scripts viven en `scripts/` y solo importan módulos de `api/src/` (no paque
 | `npm run demo:buy` | Flujo completo de compra y errores esperados | ⚠ Compra 10 fracciones de `SILO01` en cada ejecución |
 | `npm run demo:distribute` | Reparto de retornos con dos inversionistas | ⚠ Compra fracciones de `SOYA01` y paga USDC de prueba a todos sus tenedores |
 
+Notas: si `db.json` se borra y se recrea con `npm run seed`, los hitos recuperan su `txHash` original desde los efectos de Horizon (no se vuelve a escribir en Stellar). `npm run dev` ignora `data/` para que escribir `db.json` no corte una compra en curso; tras correr el seed, reinicia la API a mano para que lea la base actualizada.
+
 ## Orden para empezar de cero
 
 1. `npm run setup:stellar` (genera `api/.stellar-keys.json`).

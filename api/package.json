@@ -4,7 +4,7 @@
   "description": "API de Siembra (Express 5)",
   "scripts": {
     "test": "node --test test/*.test.js",
-    "dev": "nodemon src/server.js",
+    "dev": "nodemon --ignore data/ src/server.js",
     "start": "node src/server.js",
     "setup:stellar": "node ../scripts/setup-stellar.js",
     "seed": "node ../scripts/seed.js",
