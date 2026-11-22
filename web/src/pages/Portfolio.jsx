@@ -1,19 +1,31 @@
-import { Wallet } from 'lucide-react';
-import { ComingSoon } from '../components/ComingSoon.jsx';
+import { ArrowRight, Wallet } from 'lucide-react';
+import { useCallback, useEffect, useState } from 'react';
+import { Link } from 'react-router';
+import { motion } from 'motion/react';
+import { Button } from '../components/Button.jsx';
+import { AnimatedAmount } from '../components/AnimatedAmount.jsx';
+import { DemoLoginDialog } from '../components/DemoLoginDialog.jsx';
+import { EmptyState } from '../components/EmptyState.jsx';
+import { ErrorState } from '../components/ErrorState.jsx';
+import { Skeleton } from '../components/Skeleton.jsx';
+import { TxLink } from '../components/TxLink.jsx';
+import { api } from '../lib/api.js';
+import { useAuth } from '../lib/auth/AuthContext.jsx';
+import { fractions, usdc } from '../lib/format.js';
 import { usePageTitle } from '../lib/usePageTitle.js';
 
+function SummaryCard({ label, value, detail }) { return <motion.article initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.24, ease: 'easeOut' }} className="rounded-2xl border border-borde bg-white p-5 shadow-soft sm:p-6"><p className="text-sm text-texto-suave">{label}</p><p className="tabular mt-2 text-2xl font-semibold text-siembra-900"><AnimatedAmount value={value} /> USDC</p>{detail && <p className="mt-1 text-xs text-texto-suave">{detail}</p>}</motion.article>; }
+function PortfolioSkeleton() { return <div aria-busy="true" className="space-y-6"><span role="status" className="sr-only">Cargando portafolio</span><div className="grid gap-4 sm:grid-cols-3">{[0,1,2].map((i) => <Skeleton key={i} className="h-28" />)}</div><Skeleton className="h-56" /></div>; }
+function PortfolioTable({ holdings }) { if (!holdings.length) return <EmptyState icon={Wallet} title="Aún no tienes fracciones. Explora los activos." description="Cuando compres fracciones, aparecerán aquí con su valor y retornos recibidos." actionLabel="Explorar activos" actionTo="/" />; return <div className="overflow-hidden rounded-2xl border border-borde bg-white shadow-soft"><div className="overflow-x-auto"><table className="w-full min-w-[620px] text-left text-sm"><thead className="bg-fondo text-xs text-texto-suave"><tr><th className="px-5 py-4 font-semibold">Activo</th><th className="px-5 py-4 font-semibold">Fracciones</th><th className="px-5 py-4 font-semibold">Valor</th><th className="px-5 py-4 font-semibold">Retornos recibidos</th></tr></thead><tbody>{holdings.map((row, index) => <motion.tr key={row.assetId} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.22, delay: Math.min(index, 3) * 0.045, ease: 'easeOut' }} className="border-t border-borde"><td className="px-5 py-4"><Link className="inline-flex min-h-11 items-center gap-2 font-semibold text-siembra-700 hover:text-siembra-900 hover:underline" to={`/activo/${encodeURIComponent(row.assetId)}`}>{row.name}<ArrowRight size={15} aria-hidden="true" /></Link></td><td className="tabular px-5 py-4">{fractions(row.fractions)}</td><td className="tabular px-5 py-4">{usdc(row.valueUsdc)}</td><td className="tabular px-5 py-4">{usdc(row.returnsReceivedUsdc)}</td></motion.tr>)}</tbody></table></div></div>; }
 export function Portfolio() {
   usePageTitle('Portafolio');
-  return (
-    <ComingSoon
-      icon={Wallet}
-      title="Tu portafolio"
-      description="Aquí verás en un solo lugar todo lo que tienes invertido en el campo cruceño."
-      features={[
-        'Tu saldo disponible en USDC.',
-        'Las fracciones que tienes en cada activo y su valor.',
-        'Los retornos simulados recibidos, con enlace a cada transacción.',
-      ]}
-    />
-  );
+  const { investor } = useAuth();
+  const [showLogin, setShowLogin] = useState(false);
+  const [data, setData] = useState(null);
+  const [status, setStatus] = useState('loading');
+  const [error, setError] = useState(null);
+  const load = useCallback(async () => { if (!investor) { setStatus('ready'); return; } setStatus('loading'); try { setData(await api.getPortfolio(investor.investorId)); setStatus('ready'); } catch (err) { setError(err); setStatus('error'); } }, [investor]);
+  useEffect(() => { setData(null); load(); }, [load]);
+  if (!investor) return <section className="container-page py-10 sm:py-14"><div className="rounded-2xl border border-dashed border-borde bg-white px-6 py-12 text-center"><span className="mx-auto flex size-14 items-center justify-center rounded-full bg-siembra-100 text-siembra-700"><Wallet size={28} /></span><h1 className="mt-4 text-xl font-semibold">Entra para ver tu portafolio</h1><p className="mx-auto mt-2 max-w-md text-texto-suave">Tu saldo, fracciones y retornos aparecerán aquí después de entrar como inversionista demo.</p><Button className="mt-6" onClick={() => setShowLogin(true)}>Entrar como inversionista demo</Button></div>{showLogin && <DemoLoginDialog onClose={() => setShowLogin(false)} />}</section>;
+  return <section className="container-page py-8 sm:py-12"><header className="mb-8"><p className="text-sm font-semibold text-siembra-700">Hola, {investor.name}</p><h1 className="mt-1 text-h1 font-semibold">Tu portafolio</h1><p className="mt-2 text-texto-suave">Un resumen de tus inversiones y retornos simulados.</p></header>{status === 'loading' && <PortfolioSkeleton />}{status === 'error' && <ErrorState error={error} onRetry={load} />}{status === 'ready' && data && <div className="space-y-8"><div className="grid gap-4 sm:grid-cols-3"><SummaryCard label="USDC disponible" value={data.usdcBalance} /><SummaryCard label="Valor invertido" value={data.holdings.reduce((sum, item) => sum + Number(item.valueUsdc || 0), 0)} detail="Según el valor de compra" /><SummaryCard label="Retornos recibidos" value={data.returns.reduce((sum, item) => sum + Number(item.usdc || 0), 0)} detail="Retornos simulados" /></div><section aria-labelledby="holdings-title"><h2 id="holdings-title" className="mb-4 text-2xl font-semibold">Mis activos</h2><PortfolioTable holdings={data.holdings} /></section><section aria-labelledby="returns-title"><h2 id="returns-title" className="mb-4 text-2xl font-semibold">Retornos recibidos <span className="ml-1 align-middle text-xs font-medium text-simulado-fg">Simulados</span></h2>{data.returns.length ? <ul className="divide-y divide-borde rounded-2xl border border-borde bg-white px-5">{data.returns.map((item, index) => <motion.li key={`${item.txHash}-${index}`} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.2, delay: Math.min(index, 4) * 0.04 }} className="flex flex-wrap items-center justify-between gap-3 py-3"><div><Link to={`/activo/${encodeURIComponent(item.assetId)}`} className="font-semibold text-siembra-700">{item.assetId}</Link><p className="text-sm text-texto-suave">Período {item.period}</p></div><div className="text-right"><p className="tabular font-semibold">{usdc(item.usdc)}</p><TxLink explorerUrl={item.explorerUrl} className="min-h-9" /></div></motion.li>)}</ul> : <p className="rounded-xl border border-dashed border-borde bg-white p-5 text-sm text-texto-suave">Aún no has recibido retornos simulados.</p>}</section></div>}</section>;
 }

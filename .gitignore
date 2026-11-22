@@ -6,4 +6,5 @@ api/.stellar-keys.json
 api/data/db.json
 api/data/*.tmp
 dist
+.qa/
 .DS_Store

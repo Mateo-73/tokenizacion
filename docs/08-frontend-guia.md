@@ -123,4 +123,4 @@ Para la demo se corre en local (`npm run dev`) o con `npm run build && npm run p
 
 ## 10. Lista de verificación de Luis
 - [x] L1 scaffold y mocks · [x] L2 catálogo · [x] L3 ficha y trazabilidad · [x] L4 entrada demo
-- [ ] L5 portafolio · [ ] L6 admin · [ ] L7 estados · [ ] L8 API real · [ ] L9 pulido con docs/07
+- [x] L5 portafolio · [x] L6 admin · [x] L7 estados · [x] L8 API real · [x] L9 pulido con docs/07
