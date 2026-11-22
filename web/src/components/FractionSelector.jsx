@@ -1,6 +1,6 @@
 import { Minus, Plus } from 'lucide-react';
 import { useId } from 'react';
-import { fractions, usdc } from '../lib/format.js';
+import { amount, fractions } from '../lib/format.js';
 
 const stepClass =
   'press flex size-12 shrink-0 items-center justify-center rounded-xl border border-borde bg-white text-siembra-700 hover:bg-siembra-100 disabled:pointer-events-none disabled:opacity-40';
@@ -62,8 +62,8 @@ export function FractionSelector({ value, onChange, available, price, disabled =
       )}
       <div id={`${id}-total`} className="mt-4 flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1 rounded-xl bg-fondo px-4 py-3">
         <span className="text-sm text-texto-suave">Total a pagar</span>
-        <strong className="tabular text-xl font-semibold wrap-anywhere text-siembra-900">
-          {usdc(total)}
+        <strong className="tabular text-lg font-semibold text-siembra-900 sm:text-xl">
+          {amount(total)} <span className="text-sm font-medium text-texto-suave">USDC</span>
         </strong>
       </div>
     </div>

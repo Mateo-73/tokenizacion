@@ -48,16 +48,16 @@ export function AssetCard({ asset }) {
         </p>
         <p className="mt-3 line-clamp-2 text-sm wrap-anywhere text-texto-suave">{asset.description}</p>
 
-        <dl className="mt-6 grid grid-cols-2 gap-4 border-t border-borde pt-4">
+        <dl className="mt-6 grid grid-cols-[repeat(auto-fit,minmax(8.5rem,1fr))] gap-4 border-t border-borde pt-4">
           <div className="min-w-0">
             <dt className="text-xs text-texto-suave">Precio por fracción</dt>
-            <dd className="tabular mt-1 text-xl font-semibold wrap-anywhere text-siembra-900">
+            <dd className="tabular mt-1 text-xl font-semibold text-siembra-900">
               {amount(asset.pricePerFraction)} <span className="text-sm font-medium text-texto-suave">USDC</span>
             </dd>
           </div>
           <div className="min-w-0">
             <dt className="text-xs text-texto-suave">Disponibles</dt>
-            <dd className="tabular mt-1 text-xl font-semibold wrap-anywhere text-siembra-900">
+            <dd className="tabular mt-1 text-xl font-semibold text-siembra-900">
               {fractions(asset.availableFractions)} <span className="text-sm font-medium text-texto-suave">fracciones</span>
             </dd>
           </div>

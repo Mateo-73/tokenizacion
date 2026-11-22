@@ -61,11 +61,11 @@ function NotFoundAsset() {
   );
 }
 
-function KeyFact({ label, children, wide = false }) {
+function KeyFact({ label, children }) {
   return (
-    <div className={`min-w-0 ${wide ? 'col-span-2' : ''}`}>
+    <div className="min-w-0">
       <dt className="text-sm text-texto-suave">{label}</dt>
-      <dd className="tabular mt-1 text-lg font-semibold wrap-anywhere text-texto">{children}</dd>
+      <dd className="tabular mt-1 text-lg font-semibold text-texto">{children}</dd>
     </div>
   );
 }
@@ -187,7 +187,7 @@ export function AssetDetail() {
             </h2>
             <p className="mt-3 max-w-[65ch] leading-relaxed wrap-anywhere text-texto-suave">{asset.description}</p>
 
-            <dl className="mt-6 grid grid-cols-2 gap-x-6 gap-y-5 border-t border-borde pt-6 sm:grid-cols-4">
+            <dl className="mt-6 grid grid-cols-[repeat(auto-fit,minmax(8.5rem,1fr))] gap-x-6 gap-y-5 border-t border-borde pt-6">
               <KeyFact label="Fracciones totales">{fractions(asset.totalFractions)}</KeyFact>
               <KeyFact label="Vendidas">{fractions(asset.soldFractions)}</KeyFact>
               <KeyFact label="Disponibles">{fractions(asset.availableFractions)}</KeyFact>

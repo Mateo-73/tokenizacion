@@ -131,7 +131,7 @@ export function BuyPanel({ asset, balance, balanceStatus, onPurchased }) {
         <>
           <div className="mt-5 flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1 border-y border-borde py-3 text-sm">
             <span className="text-texto-suave">Saldo disponible</span>
-            <strong className="tabular font-semibold wrap-anywhere text-texto">
+            <strong className="tabular font-semibold text-texto">
               {balanceStatus === 'loading' ? 'Cargando…' : balance == null ? 'No disponible' : usdc(balance)}
             </strong>
           </div>
