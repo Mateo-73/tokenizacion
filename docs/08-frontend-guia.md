@@ -116,11 +116,11 @@ Siempre con `try/catch`: el almacenamiento puede fallar.
 1. Poner `VITE_USE_MOCKS=false` y arrancar la API (`npm run dev` en `api/`).
 2. Recorrer los flujos A–E de `docs/06`.
 3. Si una respuesta no coincide con `docs/04`, **avisar a Mateo en el grupo** y anotar la diferencia; no parchear en silencio.
-4. Dejar los mocks en el repo (sirven como respaldo de demo).
+4. Dejar los mocks en el repo (sirven como respaldo de demo). Con `VITE_USE_MOCKS=true` la clave de administrador del mock es `siembra-demo` (cualquier otra responde `FORBIDDEN`).
 
 ## 9. Demo
 Para la demo se corre en local (`npm run dev`) o con `npm run build && npm run preview`. Si se despliega, las variables de entorno van en la plataforma, nunca en el repo.
 
 ## 10. Lista de verificación de Luis
-- [ ] L1 scaffold y mocks · [ ] L2 catálogo · [ ] L3 ficha y trazabilidad · [ ] L4 entrada (demo, luego Pollar)
-- [ ] L5 portafolio · [ ] L6 admin · [ ] L7 estados · [ ] L8 API real · [ ] L9 pulido con docs/07
+- [x] L1 scaffold y mocks · [x] L2 catálogo · [x] L3 ficha y trazabilidad · [x] L4 entrada demo
+- [x] L5 portafolio · [x] L6 admin · [x] L7 estados · [x] L8 API real · [x] L9 pulido con docs/07
