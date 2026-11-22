@@ -146,6 +146,26 @@ describe('persistencia en db.json', () => {
     assert.ok(!existsSync(dbPath), 'no debe crear el archivo');
     assert.ok(!existsSync(join(dir, 'data')), 'ni su carpeta');
   });
+
+  it('pendingTrace vuelve a incluir un hito con hash pero sin txHash', () => {
+    const store = createStore({ dbPath: join(dir, 'y.json'), persist: false });
+    store.addTrace({
+      id: 'tr_900',
+      assetId: 'SILO01',
+      order: 9,
+      type: 'siembra',
+      title: 'Hito sin txHash',
+      date: '2026-01-01',
+      description: 'Dato de ejemplo.',
+      hash: 'ab'.repeat(32),
+      txHash: null,
+      simulated: true,
+    });
+    const pending = () => store.pendingTrace().map((item) => item.id);
+    assert.ok(pending().includes('tr_900'));
+    store.setTraceHash('tr_900', { hash: 'ab'.repeat(32), txHash: 'tx_recuperado' });
+    assert.ok(!pending().includes('tr_900'));
+  });
 });
 
 describe('seedStellar (docs/09 §11)', () => {
