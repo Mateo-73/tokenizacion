@@ -1,6 +1,6 @@
 import { BadgeCheck, Clock } from 'lucide-react';
 
-const pill = 'inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold';
+const pill = 'inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full px-3 py-1 text-xs font-semibold';
 
 export function VerifiedBadge({ verified = true, explorerUrl }) {
   if (!verified) {
@@ -23,7 +23,8 @@ export function VerifiedBadge({ verified = true, explorerUrl }) {
       href={explorerUrl}
       target="_blank"
       rel="noreferrer"
-      className={`${pill} bg-siembra-100 text-siembra-900 transition duration-150 hover:bg-siembra-700 hover:text-white`}
+      className={`${pill} bg-siembra-100 text-siembra-900 transition-colors duration-150 hover:bg-siembra-700 hover:text-white`}
+      aria-label="Verificado en Stellar: ver transacción en el explorador"
     >
       {content}
     </a>
