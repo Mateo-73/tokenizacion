@@ -67,6 +67,7 @@ Siembra busca que el campo cruceño sea el primero en demostrar cómo la tokeniz
 Sigue el guion de `docs/06` (sección "Guion de demo"). Reglas del video:
 - Decir en voz alta "datos de ejemplo" al mostrar el catálogo.
 - Mostrar **una** transacción en el explorador (la compra) y el sello "Verificado en Stellar".
+- StellarExpert muestra la hora en **UTC** y no tiene selector de zona horaria: Bolivia es **UTC-4**, así que hay que restarle 4 horas en la narración (ej. `17:05 UTC` → `13:05` hora de Bolivia). El hash no se puede renombrar, pero las transacciones nuevas llevan un **memo** legible (`SIEMBRA COMPRA SILO01 1x`, `SIEMBRA HITO ...`) que el explorador muestra como etiqueta.
 - Mostrar el reparto de retornos reflejado en el portafolio.
 - Grabar en pantalla completa, voz clara, sin música alta. Subtítulos si es posible.
 - Hacer una versión de respaldo y subirla en un enlace que funcione sin iniciar sesión.

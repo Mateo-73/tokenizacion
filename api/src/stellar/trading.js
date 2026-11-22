@@ -98,6 +98,7 @@ export async function buyFractions({ investorSecret, code, fractions, pricePerFr
         }),
       ],
       [investor],
+      `SIEMBRA COMPRA ${code} ${fractions}x`,
     );
     return { txHash: hash, totalUsdc: formatAmount(total) };
   } catch (err) {

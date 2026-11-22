@@ -93,9 +93,12 @@ export async function recordTrace({ order, ...milestone }) {
     );
   }
 
-  const { hash: txHash } = await submit(loadKeys().ISSUER, [
-    Operation.manageData({ name, value: Buffer.from(hash, 'hex') }),
-  ]);
+  const { hash: txHash } = await submit(
+    loadKeys().ISSUER,
+    [Operation.manageData({ name, value: Buffer.from(hash, 'hex') })],
+    [],
+    `SIEMBRA HITO ${milestone.assetId} ${order}`,
+  );
   return { hash, txHash };
 }
 

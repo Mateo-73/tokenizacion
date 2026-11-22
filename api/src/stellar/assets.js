@@ -89,12 +89,17 @@ export async function authorizeInvestor({ investorSecret, code }) {
   }
 
   // El emisor autoriza la trustline = "KYC aprobado"
-  const { hash } = await submit(keys.ISSUER, [
-    Operation.setTrustLineFlags({
-      trustor: investor.publicKey(),
-      asset,
-      flags: { authorized: true },
-    }),
-  ]);
+  const { hash } = await submit(
+    keys.ISSUER,
+    [
+      Operation.setTrustLineFlags({
+        trustor: investor.publicKey(),
+        asset,
+        flags: { authorized: true },
+      }),
+    ],
+    [],
+    `SIEMBRA KYC ${code}`,
+  );
   return { txHash: hash };
 }
