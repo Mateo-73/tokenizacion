@@ -1,5 +1,5 @@
 import { ArrowUpRight, MapPin } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { fractions, usdc } from '../lib/format.js';
 import { SimulatedBadge } from './ui.jsx';
 

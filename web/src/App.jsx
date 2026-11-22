@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router';
 import { Layout } from './components/Layout.jsx';
 import { Admin, AssetDetail, Catalog, NotFound, Portfolio } from './pages/Pages.jsx';
 

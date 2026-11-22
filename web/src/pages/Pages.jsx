@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router';
 import { ArrowLeft, Sprout } from 'lucide-react';
 import { api } from '../lib/api.js';
 import { AssetCard } from '../components/AssetCard.jsx';

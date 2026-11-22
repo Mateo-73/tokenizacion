@@ -1,4 +1,4 @@
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router';
 import { Sprout } from 'lucide-react';
 import { useAuth } from '../lib/auth/AuthContext.jsx';
 import { Button } from './ui.jsx';
