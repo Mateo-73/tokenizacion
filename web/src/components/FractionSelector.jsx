@@ -25,12 +25,16 @@ export function FractionSelector({ value, onChange, available, price, disabled =
         <label htmlFor={id} className="text-sm font-semibold text-texto">
           Fracciones
         </label>
-        <span className="tabular text-xs text-texto-suave">
-          {soldOut ? 'Agotado' : `Máximo ${fractions(available)}`}
-        </span>
+        <span className="tabular text-xs text-texto-suave">{soldOut ? 'Agotado' : `Máximo ${fractions(available)}`}</span>
       </div>
       <div className="mt-2 flex items-center gap-2">
-        <button type="button" aria-label="Quitar una fracción" disabled={locked || count <= 1} onClick={() => onChange(clamp(count - 1))} className={stepClass}>
+        <button
+          type="button"
+          aria-label="Quitar una fracción"
+          disabled={locked || count <= 1}
+          onClick={() => onChange(clamp(count - 1))}
+          className={stepClass}
+        >
           <Minus size={18} aria-hidden="true" />
         </button>
         <input
@@ -52,7 +56,13 @@ export function FractionSelector({ value, onChange, available, price, disabled =
             error ? 'border-error' : 'border-borde'
           }`}
         />
-        <button type="button" aria-label="Agregar una fracción" disabled={locked || count >= available} onClick={() => onChange(clamp(count + 1))} className={stepClass}>
+        <button
+          type="button"
+          aria-label="Agregar una fracción"
+          disabled={locked || count >= available}
+          onClick={() => onChange(clamp(count + 1))}
+          className={stepClass}
+        >
           <Plus size={18} aria-hidden="true" />
         </button>
       </div>

@@ -1,6 +1,7 @@
 import { ArrowLeft, MapPin, SearchX, Warehouse, Wheat } from 'lucide-react';
 import { useCallback, useEffect, useState } from 'react';
-import { motion } from 'motion/react';
+import { m } from 'motion/react';
+import { EASE_OUT } from '../lib/motion.js';
 import { Link, useParams } from 'react-router';
 import { BuyPanel } from '../components/BuyPanel.jsx';
 import { AnimatedAmount } from '../components/AnimatedAmount.jsx';
@@ -162,9 +163,18 @@ export function AssetDetail() {
 
       <header className="mt-3 overflow-hidden rounded-2xl border border-borde bg-white shadow-soft">
         <div className="relative aspect-[16/7] max-h-[400px] w-full overflow-hidden bg-siembra-100 sm:aspect-[16/6]">
-          <img src={asset.imageUrl ?? kind.art} alt={kind.alt} className={`size-full object-cover ${soldOut ? 'opacity-70 grayscale-[40%]' : ''}`} />
+          <m.img
+            initial={{ scale: 1.04 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 0.9, ease: EASE_OUT }}
+            src={asset.imageUrl ?? kind.art}
+            alt={kind.alt}
+            className={`size-full object-cover ${soldOut ? 'opacity-70 grayscale-[40%]' : ''}`}
+          />
           {asset.simulated && <SimulatedBadge className="absolute top-4 left-4 shadow-soft" />}
-          {soldOut && <span className="absolute bottom-4 left-4 rounded-full bg-siembra-900 px-3 py-1 text-xs font-semibold text-white">Agotado</span>}
+          {soldOut && (
+            <span className="absolute bottom-4 left-4 rounded-full bg-siembra-900 px-3 py-1 text-xs font-semibold text-white">Agotado</span>
+          )}
         </div>
         <div className="p-5 sm:p-8">
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
@@ -190,17 +200,23 @@ export function AssetDetail() {
             <p className="mt-3 max-w-[65ch] leading-relaxed wrap-anywhere text-texto-suave">{asset.description}</p>
 
             <dl className="mt-6 grid grid-cols-[repeat(auto-fit,minmax(8.5rem,1fr))] gap-x-6 gap-y-5 border-t border-borde pt-6">
-              <KeyFact label="Fracciones totales"><AnimatedAmount value={asset.totalFractions} format={fractions} /></KeyFact>
-              <KeyFact label="Vendidas"><AnimatedAmount value={asset.soldFractions} format={fractions} /></KeyFact>
-              <KeyFact label="Disponibles"><AnimatedAmount value={asset.availableFractions} format={fractions} /></KeyFact>
+              <KeyFact label="Fracciones totales">{fractions(asset.totalFractions)}</KeyFact>
+              <KeyFact label="Vendidas">
+                <AnimatedAmount value={asset.soldFractions} format={fractions} />
+              </KeyFact>
+              <KeyFact label="Disponibles">
+                <AnimatedAmount value={asset.availableFractions} format={fractions} />
+              </KeyFact>
               <KeyFact label="Precio por fracción">
-                <AnimatedAmount value={asset.pricePerFraction} format={amount} /> <span className="text-sm font-medium text-texto-suave">USDC</span>
+                {amount(asset.pricePerFraction)} <span className="text-sm font-medium text-texto-suave">USDC</span>
               </KeyFact>
             </dl>
 
             <div className="mt-6">
               <div className="tabular mb-2 flex flex-wrap justify-between gap-x-3 text-sm">
-                <span className="font-semibold text-siembra-700">{soldOut ? 'Todas vendidas' : `${percent(asset.soldFractions, asset.totalFractions)} vendido`}</span>
+                <span className="font-semibold text-siembra-700">
+                  {soldOut ? 'Todas vendidas' : `${percent(asset.soldFractions, asset.totalFractions)} vendido`}
+                </span>
                 <span className="text-texto-suave">
                   {fractions(asset.soldFractions)} de {fractions(asset.totalFractions)} fracciones
                 </span>
@@ -213,7 +229,12 @@ export function AssetDetail() {
                 aria-valuenow={asset.soldFractions}
                 className="h-2.5 overflow-hidden rounded-full bg-siembra-100"
               >
-                <motion.div initial={{ scaleX: 0 }} whileInView={{ scaleX: ratio / 100 }} viewport={{ once: true, margin: '-32px' }} transition={{ duration: 0.65, ease: [0.23, 1, 0.32, 1] }} className="h-full w-full origin-left rounded-full bg-siembra-500" />
+                <m.div
+                  initial={{ scaleX: 0 }}
+                  animate={{ scaleX: ratio / 100 }}
+                  transition={{ duration: 0.7, delay: 0.15, ease: EASE_OUT }}
+                  className="h-full w-full origin-left bg-siembra-500"
+                />
               </div>
             </div>
 
