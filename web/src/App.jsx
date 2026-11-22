@@ -1,5 +1,23 @@
 import { BrowserRouter, Route, Routes } from 'react-router';
 import { Layout } from './components/Layout.jsx';
-import { Admin, AssetDetail, Catalog, NotFound, Portfolio } from './pages/Pages.jsx';
+import { Admin } from './pages/Admin.jsx';
+import { AssetDetail } from './pages/AssetDetail.jsx';
+import { Catalog } from './pages/Catalog.jsx';
+import { NotFound } from './pages/NotFound.jsx';
+import { Portfolio } from './pages/Portfolio.jsx';
 
-export default function App() { return <BrowserRouter><Layout><Routes><Route path="/" element={<Catalog />} /><Route path="/activo/:id" element={<AssetDetail />} /><Route path="/portafolio" element={<Portfolio />} /><Route path="/admin" element={<Admin />} /><Route path="*" element={<NotFound />} /></Routes></Layout></BrowserRouter>; }
+export default function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route element={<Layout />}>
+          <Route index element={<Catalog />} />
+          <Route path="activo/:id" element={<AssetDetail />} />
+          <Route path="portafolio" element={<Portfolio />} />
+          <Route path="admin" element={<Admin />} />
+          <Route path="*" element={<NotFound />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  );
+}
