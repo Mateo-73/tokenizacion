@@ -1,7 +1,9 @@
 import { ArrowLeft, MapPin, SearchX, Warehouse, Wheat } from 'lucide-react';
 import { useCallback, useEffect, useState } from 'react';
+import { motion } from 'motion/react';
 import { Link, useParams } from 'react-router';
 import { BuyPanel } from '../components/BuyPanel.jsx';
+import { AnimatedAmount } from '../components/AnimatedAmount.jsx';
 import { Button } from '../components/Button.jsx';
 import { ErrorState } from '../components/ErrorState.jsx';
 import { SimulatedBadge } from '../components/SimulatedBadge.jsx';
@@ -188,11 +190,11 @@ export function AssetDetail() {
             <p className="mt-3 max-w-[65ch] leading-relaxed wrap-anywhere text-texto-suave">{asset.description}</p>
 
             <dl className="mt-6 grid grid-cols-[repeat(auto-fit,minmax(8.5rem,1fr))] gap-x-6 gap-y-5 border-t border-borde pt-6">
-              <KeyFact label="Fracciones totales">{fractions(asset.totalFractions)}</KeyFact>
-              <KeyFact label="Vendidas">{fractions(asset.soldFractions)}</KeyFact>
-              <KeyFact label="Disponibles">{fractions(asset.availableFractions)}</KeyFact>
+              <KeyFact label="Fracciones totales"><AnimatedAmount value={asset.totalFractions} format={fractions} /></KeyFact>
+              <KeyFact label="Vendidas"><AnimatedAmount value={asset.soldFractions} format={fractions} /></KeyFact>
+              <KeyFact label="Disponibles"><AnimatedAmount value={asset.availableFractions} format={fractions} /></KeyFact>
               <KeyFact label="Precio por fracción">
-                {amount(asset.pricePerFraction)} <span className="text-sm font-medium text-texto-suave">USDC</span>
+                <AnimatedAmount value={asset.pricePerFraction} format={amount} /> <span className="text-sm font-medium text-texto-suave">USDC</span>
               </KeyFact>
             </dl>
 
@@ -211,7 +213,7 @@ export function AssetDetail() {
                 aria-valuenow={asset.soldFractions}
                 className="h-2.5 overflow-hidden rounded-full bg-siembra-100"
               >
-                <div className="h-full origin-left rounded-full bg-siembra-500" style={{ width: `${ratio}%` }} />
+                <motion.div initial={{ scaleX: 0 }} whileInView={{ scaleX: ratio / 100 }} viewport={{ once: true, margin: '-32px' }} transition={{ duration: 0.65, ease: [0.23, 1, 0.32, 1] }} className="h-full w-full origin-left rounded-full bg-siembra-500" />
               </div>
             </div>
 

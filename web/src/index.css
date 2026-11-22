@@ -29,6 +29,7 @@
   --animate-dialog-in: dialog-in 240ms var(--ease-out) both;
   --animate-popover-in: popover-in 160ms var(--ease-out) both;
   --animate-confirm-in: confirm-in 320ms var(--ease-out) both;
+  --animate-shimmer: shimmer 1.8s linear infinite;
   --animate-check-draw: check-draw 360ms var(--ease-out) 120ms both;
 
   @keyframes toast-in {
@@ -59,7 +60,25 @@
     from { stroke-dashoffset: 24; }
     to { stroke-dashoffset: 0; }
   }
+  @keyframes shimmer {
+    from { transform: translateX(-100%); }
+    to { transform: translateX(100%); }
+  }
+  @keyframes field-sway {
+    0%, 100% { transform: translateY(0) rotate(-0.35deg); }
+    50% { transform: translateY(-2px) rotate(0.35deg); }
+  }
+  @keyframes verified-glint {
+    from { transform: translateX(-120%); }
+    to { transform: translateX(120%); }
+  }
 }
+
+.ambient-art { animation: field-sway 7s ease-in-out infinite; transform-origin: 50% 75%; }
+.skeleton-shimmer { position: relative; overflow: hidden; background: #E3F4EA; }
+.skeleton-shimmer::after { position: absolute; inset: 0; background: linear-gradient(100deg, transparent 20%, #f5fbf7 50%, transparent 80%); content: ""; animation: shimmer 1.8s linear infinite; }
+.verified-shine { position: relative; isolation: isolate; overflow: hidden; }
+.verified-shine::after { position: absolute; inset: 0; border-radius: inherit; background: linear-gradient(105deg, transparent 35%, rgb(255 255 255 / 0.72) 50%, transparent 65%); content: ""; pointer-events: none; animation: verified-glint 640ms var(--ease-out) 180ms 1 both; }
 
 @utility container-page {
   --safe-x: calc(env(safe-area-inset-left, 0px) + env(safe-area-inset-right, 0px));
@@ -142,4 +161,5 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+  .ambient-art { animation: none; }
 }

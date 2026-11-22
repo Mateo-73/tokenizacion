@@ -17,13 +17,13 @@ export function VerifiedBadge({ verified = true, explorerUrl }) {
       Verificado en Stellar
     </>
   );
-  if (!explorerUrl) return <span className={`${pill} bg-siembra-100 text-siembra-900`}>{content}</span>;
+  if (!explorerUrl) return <span className={`${pill} verified-shine bg-siembra-100 text-siembra-900`}>{content}</span>;
   return (
     <a
       href={explorerUrl}
       target="_blank"
       rel="noreferrer"
-      className={`${pill} bg-siembra-100 text-siembra-900 transition-colors duration-150 hover:bg-siembra-700 hover:text-white`}
+      className={`${pill} verified-shine bg-siembra-100 text-siembra-900 transition-colors duration-150 hover:bg-siembra-700 hover:text-white`}
       aria-label="Verificado en Stellar: ver transacción en el explorador"
     >
       {content}

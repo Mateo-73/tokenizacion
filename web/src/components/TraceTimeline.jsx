@@ -1,4 +1,5 @@
 import { CircleDot, Coins, RotateCw, Sprout, Truck, Warehouse, Wheat } from 'lucide-react';
+import { motion, useReducedMotion } from 'motion/react';
 import { errorMessage } from '../lib/errors.js';
 import { formatDate } from '../lib/format.js';
 import { Button } from './Button.jsx';
@@ -31,6 +32,7 @@ function TimelineSkeleton() {
 }
 
 export function TraceTimeline({ items = [], status = 'ready', error, onRetry }) {
+  const reduceMotion = useReducedMotion();
   if (status === 'loading') {
     return (
       <div aria-busy="true">
@@ -75,7 +77,7 @@ export function TraceTimeline({ items = [], status = 'ready', error, onRetry }) 
         const Icon = kind.icon;
         const last = index === items.length - 1;
         return (
-          <li key={item.id} className="relative grid grid-cols-[36px_minmax(0,1fr)] gap-4">
+          <motion.li key={item.id} initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-48px' }} transition={{ duration: 0.24, delay: reduceMotion ? 0 : Math.min(index, 3) * 0.045, ease: [0.23, 1, 0.32, 1] }} className="relative grid grid-cols-[36px_minmax(0,1fr)] gap-4">
             {!last && <span className="absolute top-10 -bottom-4 left-[17.5px] w-px bg-borde" aria-hidden="true" />}
             <span className="relative flex size-9 items-center justify-center rounded-full border border-siembra-100 bg-white text-siembra-700 shadow-soft">
               <Icon size={17} aria-hidden="true" />
@@ -93,7 +95,7 @@ export function TraceTimeline({ items = [], status = 'ready', error, onRetry }) 
               <h3 className="mt-2 text-lg leading-snug font-semibold wrap-anywhere">{item.title}</h3>
               {item.description && <p className="mt-2 text-sm leading-relaxed wrap-anywhere text-texto-suave">{item.description}</p>}
             </article>
-          </li>
+          </motion.li>
         );
       })}
     </ol>

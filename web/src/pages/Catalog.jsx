@@ -1,5 +1,6 @@
 import { ArrowDown, Coins, Info, ShieldCheck, Sprout, Wheat } from 'lucide-react';
 import { useCallback, useEffect, useState } from 'react';
+import { motion, useReducedMotion } from 'motion/react';
 import { AssetCard, AssetCardSkeleton } from '../components/AssetCard.jsx';
 import { Button } from '../components/Button.jsx';
 import { EmptyState } from '../components/EmptyState.jsx';
@@ -15,32 +16,34 @@ const highlights = [
 ];
 
 function Hero() {
+  const reduceMotion = useReducedMotion();
+  const reveal = (delay) => reduceMotion ? {} : { initial: { opacity: 0, y: 10 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.24, delay, ease: [0.23, 1, 0.32, 1] } };
   return (
     <section className="container-page pt-6 sm:pt-12">
       <div className="overflow-hidden rounded-2xl border border-borde bg-white shadow-soft">
         <div className="grid lg:grid-cols-[1.1fr_1fr]">
           <div className="flex flex-col justify-center p-6 sm:p-12">
-            <span className="inline-flex w-fit items-center gap-2 rounded-full bg-siembra-100 px-3 py-1 text-xs font-semibold text-siembra-700">
+            <motion.span {...reveal(0)} className="inline-flex w-fit items-center gap-2 rounded-full bg-siembra-100 px-3 py-1 text-xs font-semibold text-siembra-700">
               <Sprout size={14} aria-hidden="true" />
               Capital para el agro cruceño
-            </span>
-            <h1 className="mt-4 text-h2 font-semibold tracking-tight sm:text-h1">El campo cruceño, abierto al mundo</h1>
-            <p className="mt-4 max-w-md text-texto-suave">
+            </motion.span>
+            <motion.h1 {...reveal(0.08)} className="mt-4 text-h2 font-semibold tracking-tight sm:text-h1">El campo cruceño, abierto al mundo</motion.h1>
+            <motion.p {...reveal(0.16)} className="mt-4 max-w-md text-texto-suave">
               Compra fracciones de silos y campañas agrícolas de Santa Cruz en USDC, y verifica cada hito del activo en Stellar.
-            </p>
-            <div className="mt-8 flex flex-wrap items-center gap-3">
+            </motion.p>
+            <motion.div {...reveal(0.24)} className="mt-8 flex flex-wrap items-center gap-3">
               <Button href="#activos">
                 Explorar activos
                 <ArrowDown size={16} aria-hidden="true" />
               </Button>
-            </div>
+            </motion.div>
             <p className="mt-6 inline-flex w-fit items-start gap-2 rounded-xl bg-simulado-bg px-3 py-2 text-xs font-medium text-simulado-fg">
               <Info size={14} className="mt-px shrink-0" aria-hidden="true" />
               {TESTNET_NOTICE}
             </p>
           </div>
           <div className="relative order-first h-56 sm:h-72 lg:order-none lg:h-auto lg:min-h-96">
-            <img src="/brand/hero.svg" alt="Ilustración de silos y cultivos en el campo cruceño" className="absolute inset-0 size-full object-cover" />
+            <motion.img {...reveal(0.3)} src="/brand/hero.svg" alt="Ilustración de silos y cultivos en el campo cruceño" className="ambient-art absolute inset-0 size-full object-cover" />
           </div>
         </div>
         <ul className="grid border-t border-borde sm:grid-cols-3">

@@ -1,8 +1,10 @@
 import { ArrowRight, CalendarClock, MapPin, Warehouse, Wheat } from 'lucide-react';
 import { Link } from 'react-router';
+import { motion, useReducedMotion } from 'motion/react';
 import { amount, fractions, percent } from '../lib/format.js';
 import { SimulatedBadge } from './SimulatedBadge.jsx';
 import { Skeleton } from './Skeleton.jsx';
+import { AnimatedAmount } from './AnimatedAmount.jsx';
 
 const kinds = {
   silo: { label: 'Infraestructura', icon: Warehouse, art: '/brand/silo.svg', alt: 'Ilustración de silos de acopio en el campo' },
@@ -10,6 +12,7 @@ const kinds = {
 };
 
 export function AssetCard({ asset }) {
+  const reduceMotion = useReducedMotion();
   const kind = kinds[asset.type] ?? kinds.campaign;
   const KindIcon = kind.icon;
   const soldOut = asset.availableFractions <= 0;
@@ -17,7 +20,7 @@ export function AssetCard({ asset }) {
   const ratio = asset.totalFractions > 0 ? Math.min(100, (asset.soldFractions / asset.totalFractions) * 100) : 0;
 
   return (
-    <article className="relative flex min-w-0 flex-col overflow-hidden rounded-2xl border border-borde bg-white shadow-soft transition-[border-color,box-shadow] duration-200 ease-out hover:border-siembra-500/40 hover:shadow-lift has-[a:focus-visible]:outline-2 has-[a:focus-visible]:outline-offset-2 has-[a:focus-visible]:outline-siembra-500">
+    <motion.article initial={reduceMotion ? false : { opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.28, delay: asset.id === 'SILO01' ? 0 : 0.07, ease: [0.23, 1, 0.32, 1] }} className="relative flex min-w-0 flex-col overflow-hidden rounded-2xl border border-borde bg-white shadow-soft transition-[border-color,box-shadow] duration-200 ease-out hover:border-siembra-500/40 hover:shadow-lift has-[a:focus-visible]:outline-2 has-[a:focus-visible]:outline-offset-2 has-[a:focus-visible]:outline-siembra-500">
       <div className="relative aspect-[12/7] overflow-hidden bg-siembra-100">
         <img
           src={asset.imageUrl ?? kind.art}
@@ -52,13 +55,13 @@ export function AssetCard({ asset }) {
           <div className="min-w-0">
             <dt className="text-xs text-texto-suave">Precio por fracción</dt>
             <dd className="tabular mt-1 text-xl font-semibold text-siembra-900">
-              {amount(asset.pricePerFraction)} <span className="text-sm font-medium text-texto-suave">USDC</span>
+              <AnimatedAmount value={asset.pricePerFraction} format={amount} /> <span className="text-sm font-medium text-texto-suave">USDC</span>
             </dd>
           </div>
           <div className="min-w-0">
             <dt className="text-xs text-texto-suave">Disponibles</dt>
             <dd className="tabular mt-1 text-xl font-semibold text-siembra-900">
-              {fractions(asset.availableFractions)} <span className="text-sm font-medium text-texto-suave">fracciones</span>
+              <AnimatedAmount value={asset.availableFractions} format={fractions} /> <span className="text-sm font-medium text-texto-suave">fracciones</span>
             </dd>
           </div>
         </dl>
@@ -78,7 +81,7 @@ export function AssetCard({ asset }) {
             aria-valuenow={asset.soldFractions}
             className="h-2 overflow-hidden rounded-full bg-siembra-100"
           >
-            <div className="h-full rounded-full bg-siembra-500" style={{ width: `${ratio}%` }} />
+            <motion.div initial={reduceMotion ? false : { scaleX: 0 }} whileInView={{ scaleX: ratio / 100 }} viewport={{ once: true, margin: '-32px' }} transition={{ duration: 0.65, ease: [0.23, 1, 0.32, 1] }} className="h-full w-full origin-left rounded-full bg-siembra-500" />
           </div>
         </div>
 
@@ -93,7 +96,7 @@ export function AssetCard({ asset }) {
           </span>
         </div>
       </div>
-    </article>
+    </motion.article>
   );
 }
 
