@@ -12,10 +12,10 @@ export function Layout() {
   }, [pathname]);
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-dvh flex-col">
       <Navbar />
       {pathname !== '/' && <TestnetNotice />}
-      <main key={pathname} className="flex-1 animate-fade-in">
+      <main className="flex-1">
         <Outlet />
       </main>
       <Footer />

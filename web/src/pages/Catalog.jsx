@@ -112,7 +112,7 @@ export function Catalog() {
           <EmptyState title="Aún no hay activos publicados" description="Pronto podrás explorar silos y campañas agrícolas de Santa Cruz." />
         )}
         {status === 'ready' && assets.length > 0 && (
-          <div className="grid animate-fade-in gap-6 lg:grid-cols-2">
+          <div className="grid gap-6 lg:grid-cols-2">
             {assets.map((asset) => (
               <AssetCard key={asset.id} asset={asset} />
             ))}

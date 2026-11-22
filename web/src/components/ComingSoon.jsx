@@ -7,12 +7,12 @@ export function ComingSoon({ icon: Icon, eyebrow, title, description, features }
     <section className="container-page py-8 sm:py-12">
       <Link
         to="/"
-        className="-ml-3 inline-flex min-h-11 items-center gap-2 rounded-xl px-3 text-sm font-semibold text-siembra-700 transition duration-150 hover:bg-siembra-100"
+        className="-ml-3 inline-flex min-h-11 items-center gap-2 rounded-xl px-3 text-sm font-semibold text-siembra-700 transition-colors duration-150 hover:bg-siembra-100"
       >
         <ArrowLeft size={16} aria-hidden="true" />
         Volver a activos
       </Link>
-      <div className="mt-4 animate-fade-in rounded-2xl border border-borde bg-white p-6 shadow-soft sm:p-12">
+      <div className="mt-4 rounded-2xl border border-borde bg-white p-6 shadow-soft sm:p-12">
         <div className="flex flex-col gap-6 sm:flex-row sm:gap-8">
           <span className="flex size-14 shrink-0 items-center justify-center rounded-2xl bg-siembra-100 text-siembra-700">
             <Icon size={28} aria-hidden="true" />

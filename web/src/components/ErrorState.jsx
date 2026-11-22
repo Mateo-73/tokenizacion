@@ -4,7 +4,7 @@ import { Button } from './Button.jsx';
 
 export function ErrorState({ error, onRetry }) {
   return (
-    <div role="alert" className="animate-fade-in rounded-2xl border border-error/25 bg-white px-6 py-12 text-center">
+    <div role="alert" className="rounded-2xl border border-error/25 bg-white px-6 py-12 text-center">
       <span className="mx-auto flex size-14 items-center justify-center rounded-full bg-error/10 text-error">
         <WifiOff size={26} aria-hidden="true" />
       </span>
