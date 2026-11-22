@@ -1,4 +1,5 @@
 node_modules
+api
 api/node_modules
 web/node_modules
 .git
@@ -6,3 +7,8 @@ dist
 web/dist
 *.log
 .DS_Store
+docs
+scripts
+vercel.json
+README.md
+CLAUDE.md
