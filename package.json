@@ -12,9 +12,15 @@
     "dev:api": "npm --prefix api run dev",
     "dev:web": "npm --prefix web run dev",
     "setup:stellar": "npm --prefix api run setup:stellar",
-    "seed": "npm --prefix api run seed"
+    "seed": "npm --prefix api run seed",
+    "demo:buy": "npm --prefix api run demo:buy",
+    "portfolio": "npm --prefix api run portfolio --",
+    "demo:distribute": "npm --prefix api run demo:distribute",
+    "demo:trace": "npm --prefix api run demo:trace",
+    "test:flow": "npm --prefix api run test:flow --"
   },
   "devDependencies": {
     "concurrently": "10.0.7"
-  }
+  },
+  "type": "module"
 }

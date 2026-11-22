@@ -1,0 +1,72 @@
+{
+  "assets": [
+    {
+      "id": "SILO01",
+      "name": "Silo de acopio, Santa Cruz (ejemplo)",
+      "type": "silo",
+      "vertical": "agro",
+      "description": "Infraestructura de acopio de granos. Datos de ejemplo.",
+      "location": "Santa Cruz, Bolivia",
+      "imageUrl": null,
+      "totalFractions": 1000,
+      "pricePerFraction": "50.0000000",
+      "returnLabelSimulated": "Renta de almacenaje simulada, pago periódico",
+      "status": "active",
+      "simulated": true
+    },
+    {
+      "id": "SOYA01",
+      "name": "Campaña de soya verano 2026/27, 200 ha (ejemplo)",
+      "type": "campaign",
+      "vertical": "agro",
+      "description": "Financiamiento de una campaña de soya. Datos de ejemplo.",
+      "location": "Santa Cruz, Bolivia",
+      "imageUrl": null,
+      "totalFractions": 2000,
+      "pricePerFraction": "25.0000000",
+      "returnLabelSimulated": "Pago único simulado al vender la cosecha",
+      "status": "active",
+      "simulated": true
+    }
+  ],
+  "investors": [],
+  "trace": [
+    {
+      "id": "tr_001",
+      "assetId": "SOYA01",
+      "order": 1,
+      "type": "siembra",
+      "title": "Siembra completada",
+      "date": "2026-11-10",
+      "description": "200 ha sembradas. Dato de ejemplo.",
+      "hash": null,
+      "txHash": null,
+      "simulated": true
+    },
+    {
+      "id": "tr_002",
+      "assetId": "SOYA01",
+      "order": 2,
+      "type": "insumos",
+      "title": "Insumos aplicados",
+      "date": "2026-11-25",
+      "description": "Fertilización y control de plagas. Dato de ejemplo.",
+      "hash": null,
+      "txHash": null,
+      "simulated": true
+    },
+    {
+      "id": "tr_003",
+      "assetId": "SILO01",
+      "order": 1,
+      "type": "almacenaje",
+      "title": "Ingreso de grano al silo",
+      "date": "2026-11-15",
+      "description": "Primer lote almacenado. Dato de ejemplo.",
+      "hash": null,
+      "txHash": null,
+      "simulated": true
+    }
+  ],
+  "returns": []
+}
