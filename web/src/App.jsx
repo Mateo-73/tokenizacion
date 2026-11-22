@@ -6,6 +6,7 @@ import { AssetDetail } from './pages/AssetDetail.jsx';
 import { Catalog } from './pages/Catalog.jsx';
 import { NotFound } from './pages/NotFound.jsx';
 import { Portfolio } from './pages/Portfolio.jsx';
+import { TransactionDetail } from './pages/TransactionDetail.jsx';
 
 export default function App() {
   return (
@@ -18,6 +19,7 @@ export default function App() {
               <Route path="activo/:id" element={<AssetDetail />} />
               <Route path="portafolio" element={<Portfolio />} />
               <Route path="admin" element={<Admin />} />
+              <Route path="tx/:hash" element={<TransactionDetail />} />
               <Route path="*" element={<NotFound />} />
             </Route>
           </Routes>
