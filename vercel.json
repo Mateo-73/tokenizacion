@@ -4,6 +4,5 @@
   "installCommand": "npm ci --prefix web",
   "buildCommand": "npm run build --prefix web",
   "outputDirectory": "web/dist",
-  "functions": {},
   "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
 }
