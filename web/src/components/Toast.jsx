@@ -50,10 +50,7 @@ export function ToastProvider({ children }) {
     const id = sequence.current;
     setToasts((current) => [...current.slice(-2), { id, message, type }]);
   }, []);
-  const value = useMemo(
-    () => ({ success: (message) => show(message, 'success'), error: (message) => show(message, 'error') }),
-    [show],
-  );
+  const value = useMemo(() => ({ success: (message) => show(message, 'success'), error: (message) => show(message, 'error') }), [show]);
 
   return (
     <ToastContext.Provider value={value}>
@@ -61,7 +58,7 @@ export function ToastProvider({ children }) {
       <div
         role="status"
         aria-live="polite"
-        className="pointer-events-none fixed inset-x-0 bottom-[calc(16px+env(safe-area-inset-bottom))] z-50 mx-auto flex w-[min(100%-32px,420px)] flex-col items-center gap-2 sm:inset-x-auto sm:right-6 sm:bottom-[calc(24px+env(safe-area-inset-bottom))] sm:mx-0 sm:w-96"
+        className="pointer-events-none fixed inset-x-0 bottom-[calc(16px+env(safe-area-inset-bottom))] z-50 mx-auto flex w-[min(100%-32px,420px)] flex-col items-center gap-2 sm:inset-x-auto sm:left-[max(24px,env(safe-area-inset-left))] sm:bottom-[calc(24px+env(safe-area-inset-bottom))] sm:mx-0 sm:w-96 sm:items-stretch"
       >
         {toasts.map((toast) => (
           <ToastItem key={toast.id} toast={toast} onDismiss={dismiss} />

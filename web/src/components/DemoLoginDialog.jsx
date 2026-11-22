@@ -3,7 +3,6 @@ import { useEffect, useId, useRef, useState } from 'react';
 import { useAuth } from '../lib/auth/AuthContext.jsx';
 import { errorMessage } from '../lib/errors.js';
 import { Button } from './Button.jsx';
-import { useToast } from './Toast.jsx';
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const NAME_MAX = 100;
@@ -14,12 +13,13 @@ function validate({ name, email }) {
   if (!name.trim()) errors.name = 'Ingresa tu nombre.';
   else if (name.trim().length > NAME_MAX) errors.name = `Usa como máximo ${NAME_MAX} caracteres.`;
   if (!email.trim()) errors.email = 'Ingresa tu correo electrónico.';
-  else if (email.trim().length > EMAIL_MAX || !EMAIL.test(email.trim())) errors.email = 'Escribe un correo válido, por ejemplo ana@ejemplo.com.';
+  else if (email.trim().length > EMAIL_MAX || !EMAIL.test(email.trim()))
+    errors.email = 'Escribe un correo válido, por ejemplo ana@ejemplo.com.';
   return errors;
 }
 
 const inputClass =
-  'mt-1.5 h-12 w-full min-w-0 rounded-xl border bg-white px-4 text-base text-texto outline-none transition-[border-color,box-shadow] duration-150 focus:border-siembra-500 focus:ring-3 focus:ring-siembra-500/20';
+  'mt-1.5 h-12 w-full min-w-0 rounded-xl border bg-white px-4 text-base text-texto outline-none placeholder:text-texto-suave transition-[border-color,box-shadow] duration-150 focus:border-siembra-500 focus:ring-3 focus:ring-siembra-500/20';
 
 function Field({ id, label, error, ...props }) {
   const errorId = `${id}-error`;
@@ -46,19 +46,27 @@ function Field({ id, label, error, ...props }) {
 
 export function DemoLoginDialog({ onClose }) {
   const { login, loading } = useAuth();
-  const toast = useToast();
   const ref = useRef(null);
   const uid = useId();
   const [values, setValues] = useState({ name: '', email: '' });
   const [submitted, setSubmitted] = useState(false);
   const [serverError, setServerError] = useState('');
+  const [closing, setClosing] = useState(false);
   const errors = submitted ? validate(values) : {};
 
   useEffect(() => {
     if (!ref.current.open) ref.current.showModal();
   }, []);
 
-  const close = () => ref.current?.close();
+  const close = () => {
+    if (closing) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      ref.current?.close();
+      return;
+    }
+    setClosing(true);
+    window.setTimeout(() => ref.current?.close(), 150);
+  };
   const update = (field) => (event) => {
     setValues((current) => ({ ...current, [field]: event.target.value }));
     setServerError('');
@@ -75,7 +83,6 @@ export function DemoLoginDialog({ onClose }) {
     }
     try {
       await login({ name: values.name.trim(), email: values.email.trim() });
-      toast.success('Sesión demo iniciada.');
       close();
     } catch (err) {
       setServerError(errorMessage(err));
@@ -88,10 +95,16 @@ export function DemoLoginDialog({ onClose }) {
       aria-labelledby={`${uid}-title`}
       aria-describedby={`${uid}-description`}
       onClose={onClose}
+      onCancel={(event) => {
+        event.preventDefault();
+        close();
+      }}
       onClick={(event) => {
         if (event.target === event.currentTarget) close();
       }}
-      className="m-auto w-[min(100%-32px,28rem)] max-w-none text-texto animate-dialog-in overflow-visible bg-transparent p-0 backdrop:animate-overlay-in backdrop:bg-siembra-900/50"
+      className={`m-auto w-[min(100%-32px,28rem)] max-w-none overflow-visible bg-transparent p-0 text-texto backdrop:bg-siembra-900/50 ${
+        closing ? 'pointer-events-none animate-dialog-out backdrop:animate-overlay-out' : 'animate-dialog-in backdrop:animate-overlay-in'
+      }`}
     >
       <div className="relative max-h-[calc(100dvh-32px)] overflow-y-auto overscroll-contain rounded-2xl border border-borde bg-white p-6 shadow-lift sm:p-8">
         <button
