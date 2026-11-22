@@ -15,7 +15,7 @@ export function Layout() {
     <div className="flex min-h-screen flex-col">
       <Navbar />
       {pathname !== '/' && <TestnetNotice />}
-      <main className="flex-1">
+      <main key={pathname} className="flex-1 animate-fade-in">
         <Outlet />
       </main>
       <Footer />
