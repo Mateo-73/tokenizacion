@@ -35,3 +35,11 @@ export function formatDate(value) {
   const parsed = new Date(/^\d{4}-\d{2}-\d{2}$/.test(text) ? `${text}T00:00:00Z` : text);
   return Number.isNaN(parsed.getTime()) ? '' : day.format(parsed);
 }
+
+const month = new Intl.DateTimeFormat(LOCALE, { month: 'long', year: 'numeric', timeZone: 'UTC' });
+
+export function formatPeriod(value) {
+  const match = /^(\d{4})-(\d{2})$/.exec(String(value ?? ''));
+  if (!match) return String(value ?? '');
+  return month.format(new Date(Date.UTC(Number(match[1]), Number(match[2]) - 1, 1)));
+}

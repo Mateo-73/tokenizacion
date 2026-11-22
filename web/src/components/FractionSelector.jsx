@@ -1,6 +1,7 @@
 import { Minus, Plus } from 'lucide-react';
 import { useId } from 'react';
-import { amount, fractions } from '../lib/format.js';
+import { AnimatedAmount } from './AnimatedAmount.jsx';
+import { fractions } from '../lib/format.js';
 
 const stepClass =
   'press flex size-12 shrink-0 items-center justify-center rounded-xl border border-borde bg-white text-siembra-700 hover:bg-siembra-100 disabled:pointer-events-none disabled:opacity-40';
@@ -24,12 +25,16 @@ export function FractionSelector({ value, onChange, available, price, disabled =
         <label htmlFor={id} className="text-sm font-semibold text-texto">
           Fracciones
         </label>
-        <span className="tabular text-xs text-texto-suave">
-          {soldOut ? 'Agotado' : `Máximo ${fractions(available)}`}
-        </span>
+        <span className="tabular text-xs text-texto-suave">{soldOut ? 'Agotado' : `Máximo ${fractions(available)}`}</span>
       </div>
       <div className="mt-2 flex items-center gap-2">
-        <button type="button" aria-label="Quitar una fracción" disabled={locked || count <= 1} onClick={() => onChange(clamp(count - 1))} className={stepClass}>
+        <button
+          type="button"
+          aria-label="Quitar una fracción"
+          disabled={locked || count <= 1}
+          onClick={() => onChange(clamp(count - 1))}
+          className={stepClass}
+        >
           <Minus size={18} aria-hidden="true" />
         </button>
         <input
@@ -51,7 +56,13 @@ export function FractionSelector({ value, onChange, available, price, disabled =
             error ? 'border-error' : 'border-borde'
           }`}
         />
-        <button type="button" aria-label="Agregar una fracción" disabled={locked || count >= available} onClick={() => onChange(clamp(count + 1))} className={stepClass}>
+        <button
+          type="button"
+          aria-label="Agregar una fracción"
+          disabled={locked || count >= available}
+          onClick={() => onChange(clamp(count + 1))}
+          className={stepClass}
+        >
           <Plus size={18} aria-hidden="true" />
         </button>
       </div>
@@ -63,7 +74,7 @@ export function FractionSelector({ value, onChange, available, price, disabled =
       <div id={`${id}-total`} className="mt-4 flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1 rounded-xl bg-fondo px-4 py-3">
         <span className="text-sm text-texto-suave">Total a pagar</span>
         <strong className="tabular text-lg font-semibold text-siembra-900 sm:text-xl">
-          {amount(total)} <span className="text-sm font-medium text-texto-suave">USDC</span>
+          <AnimatedAmount value={total} /> <span className="text-sm font-medium text-texto-suave">USDC</span>
         </strong>
       </div>
     </div>

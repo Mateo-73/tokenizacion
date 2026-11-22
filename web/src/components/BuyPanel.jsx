@@ -1,9 +1,13 @@
 import { CircleAlert, ShieldCheck } from 'lucide-react';
 import { useState } from 'react';
+import { m } from 'motion/react';
 import { api } from '../lib/api.js';
 import { useAuth } from '../lib/auth/AuthContext.jsx';
+import { useAuthorization } from '../lib/auth/authorization.js';
 import { errorMessage } from '../lib/errors.js';
 import { fractions as formatFractions, usdc } from '../lib/format.js';
+import { EASE_OUT } from '../lib/motion.js';
+import { AnimatedAmount } from './AnimatedAmount.jsx';
 import { Button } from './Button.jsx';
 import { DemoLoginDialog } from './DemoLoginDialog.jsx';
 import { FractionSelector } from './FractionSelector.jsx';
@@ -11,13 +15,14 @@ import { PurchaseSuccess } from './PurchaseSuccess.jsx';
 import { TxLink } from './TxLink.jsx';
 
 const SESSION_LOST = 'Tu sesión demo ya no existe en el servidor. Entra de nuevo para continuar.';
+const swap = { initial: { opacity: 0, y: 6 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.24, ease: EASE_OUT } };
 
 function Step({ number, title, done, children }) {
   return (
     <li className="relative grid grid-cols-[28px_minmax(0,1fr)] gap-x-3">
       <span
-        className={`flex size-7 items-center justify-center rounded-full text-xs font-semibold tabular ${
-          done ? 'bg-siembra-700 text-white' : 'border border-siembra-700 text-siembra-700'
+        className={`flex size-7 items-center justify-center rounded-full border text-xs font-semibold tabular transition-colors duration-200 ${
+          done ? 'border-siembra-700 bg-siembra-700 text-white' : 'border-siembra-700 text-siembra-700'
         }`}
         aria-hidden="true"
       >
@@ -33,8 +38,13 @@ function Step({ number, title, done, children }) {
 
 export function BuyPanel({ asset, balance, balanceStatus, onPurchased }) {
   const { investor, logout } = useAuth();
+  const {
+    authorized,
+    verificationResult,
+    verify: verifyIdentity,
+    clear: clearAuthorization,
+  } = useAuthorization(investor?.investorId, asset.id);
   const [count, setCount] = useState(1);
-  const [authorization, setAuthorization] = useState(null);
   const [working, setWorking] = useState('');
   const [error, setError] = useState('');
   const [selectorError, setSelectorError] = useState('');
@@ -45,7 +55,6 @@ export function BuyPanel({ asset, balance, balanceStatus, onPurchased }) {
 
   if (owner !== investor?.investorId) {
     setOwner(investor?.investorId);
-    setAuthorization(null);
     setSuccess(null);
     setSelectorError('');
     if (investor) setError('');
@@ -57,6 +66,7 @@ export function BuyPanel({ asset, balance, balanceStatus, onPurchased }) {
       setError(SESSION_LOST);
       return;
     }
+    if (err?.code === 'NOT_AUTHORIZED') clearAuthorization();
     setError(errorMessage(err));
   };
 
@@ -64,7 +74,7 @@ export function BuyPanel({ asset, balance, balanceStatus, onPurchased }) {
     setWorking('verify');
     setError('');
     try {
-      setAuthorization(await api.authorize({ investorId: investor.investorId, assetId: asset.id }));
+      await verifyIdentity();
     } catch (err) {
       fail(err);
     } finally {
@@ -104,9 +114,7 @@ export function BuyPanel({ asset, balance, balanceStatus, onPurchased }) {
           <h2 id="buy-heading" className="text-2xl leading-tight font-semibold">
             Comprar fracciones
           </h2>
-          <p className="tabular mt-1 text-sm text-texto-suave">
-            {usdc(asset.pricePerFraction)} por fracción
-          </p>
+          <p className="tabular mt-1 text-sm text-texto-suave">{usdc(asset.pricePerFraction)} por fracción</p>
         </div>
         <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-siembra-100 text-siembra-700">
           <ShieldCheck size={20} aria-hidden="true" />
@@ -132,26 +140,40 @@ export function BuyPanel({ asset, balance, balanceStatus, onPurchased }) {
           <div className="mt-5 flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1 border-y border-borde py-3 text-sm">
             <span className="text-texto-suave">Saldo disponible</span>
             <strong className="tabular font-semibold text-texto">
-              {balanceStatus === 'loading' ? 'Cargando…' : balance == null ? 'No disponible' : usdc(balance)}
+              {balanceStatus === 'loading' ? (
+                'Cargando…'
+              ) : balance == null ? (
+                'No disponible'
+              ) : (
+                <>
+                  <AnimatedAmount value={balance} /> USDC
+                </>
+              )}
             </strong>
           </div>
           <ol className="mt-5 space-y-6">
-            <Step number={1} title="Verificar identidad" done={Boolean(authorization)}>
-              {authorization ? (
-                <>
-                  <p className="inline-flex items-center gap-1.5 rounded-full bg-siembra-100 px-3 py-1 text-sm font-semibold text-siembra-900">
+            <Step number={1} title="Verificar identidad" done={authorized}>
+              {authorized ? (
+                <m.div key="verified" {...swap}>
+                  <p className="inline-flex items-center gap-1.5 rounded-full bg-siembra-100 px-3 py-1 text-sm font-semibold text-siembra-900 verified-shine">
                     <ShieldCheck size={15} aria-hidden="true" />
                     Identidad verificada (simulada)
                   </p>
-                  <TxLink explorerUrl={authorization.explorerUrl} className="mt-1" />
-                </>
+                  <TxLink explorerUrl={verificationResult?.explorerUrl} className="mt-1" />
+                </m.div>
               ) : (
-                <>
+                <div key="pending">
                   <p className="text-sm text-texto-suave">Verificación simulada (KYC de ejemplo) para este activo.</p>
-                  <Button className="mt-3 w-full" variant="secondary" disabled={Boolean(working)} loading={working === 'verify'} onClick={verify}>
+                  <Button
+                    className="mt-3 w-full"
+                    variant="secondary"
+                    disabled={Boolean(working)}
+                    loading={working === 'verify'}
+                    onClick={verify}
+                  >
                     {working === 'verify' ? 'Verificando…' : 'Verificar identidad'}
                   </Button>
-                </>
+                </div>
               )}
             </Step>
             <Step number={2} title="Comprar">
@@ -166,9 +188,10 @@ export function BuyPanel({ asset, balance, balanceStatus, onPurchased }) {
                 disabled={Boolean(working)}
                 error={selectorError}
               />
-              <Button className="mt-4 w-full" disabled={Boolean(working)} loading={working === 'buy'} onClick={buy}>
+              <Button className="mt-4 w-full" disabled={Boolean(working) || !authorized} loading={working === 'buy'} onClick={buy}>
                 {working === 'buy' ? 'Enviando compra…' : 'Comprar fracciones'}
               </Button>
+              {!authorized && <p className="mt-2 text-xs text-texto-suave">Primero verifica tu identidad para este activo.</p>}
             </Step>
           </ol>
         </>
@@ -177,7 +200,10 @@ export function BuyPanel({ asset, balance, balanceStatus, onPurchased }) {
       {success && <PurchaseSuccess result={success} />}
 
       {error && (
-        <p role="alert" className="mt-4 flex items-start gap-2 rounded-xl border border-error/25 bg-error/5 p-3 text-sm text-error">
+        <p
+          role="alert"
+          className="mt-4 flex animate-confirm-in items-start gap-2 rounded-xl border border-error/25 bg-error/5 p-3 text-sm text-error"
+        >
           <CircleAlert size={18} className="shrink-0" aria-hidden="true" />
           {error}
         </p>
